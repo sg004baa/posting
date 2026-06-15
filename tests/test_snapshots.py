@@ -1,3 +1,4 @@
+import asyncio
 import os
 from pathlib import Path
 from unittest import mock
@@ -6,6 +7,7 @@ import pytest
 from textual.pilot import Pilot
 from textual.widgets import Input
 from posting.__main__ import make_posting
+from posting.commands import SimpleCommand, SimpleProvider
 
 TEST_DIR = Path(__file__).parent
 CONFIG_DIR = TEST_DIR / "sample-configs"
@@ -156,6 +158,43 @@ class TestCommandPalette:
             await pilot.press("down", "enter")
 
         assert snap_compare(POSTING_MAIN, run_before=run_before)
+
+    def test_request_search_palette_loads(self, snap_compare):
+        """Check that the request search palette loads."""
+
+        async def run_before(pilot: Pilot):
+            await pilot.press("slash")
+            await disable_blink_for_active_cursors(pilot)
+
+        assert snap_compare(
+            POSTING_MAIN, run_before=run_before, terminal_size=(120, 34)
+        )
+
+    def test_request_search_matches_search_text(self):
+        """Check that request search can match against hidden search text."""
+
+        callback = mock.Mock()
+        provider = SimpleProvider(
+            mock.Mock(),
+            [
+                SimpleCommand(
+                    name="get random user",
+                    callback=callback,
+                    help_text="get-random-user.posting.yaml",
+                    search_text="https://api.randomuser.me",
+                )
+            ],
+        )
+        provider(mock.Mock(), None)
+
+        async def search():
+            return [hit async for hit in provider.search("randomuser")]
+
+        hits = asyncio.run(search())
+
+        assert len(hits) == 1
+        assert hits[0].command is callback
+        assert hits[0].help == "get-random-user.posting.yaml"
 
 
 @use_config("general.yaml")

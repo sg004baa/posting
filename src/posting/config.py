@@ -209,6 +209,9 @@ class Settings(BaseSettings):
     keymap: dict[str, str] = Field(default_factory=dict)
     """A dictionary mapping binding IDs to key combinations."""
 
+    auto_save_on_response: bool = Field(default=False)
+    """Automatically save requests with an existing path after receiving a response."""
+
     curl_export_extra_args: str = Field(default="")
     """Extra arguments to pass to curl when exporting a request as a curl command."""
 

@@ -1,5 +1,5 @@
-from dataclasses import dataclass
 import re
+from dataclasses import dataclass
 from typing import Any
 from rich.text import Text
 from textual import on
@@ -140,7 +140,6 @@ It's recommended you create a new request before pasting a curl command, to avoi
         if url:
             self.app.copy_to_clipboard(url)
             self.notify(f"Copied URL to clipboard: {url}")
-
 
 class SendRequestButton(Button, can_focus=False):
     """
