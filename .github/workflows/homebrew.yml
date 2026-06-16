@@ -44,14 +44,15 @@ jobs:
           class Posting < Formula
             include Language::Python::Virtualenv
 
-            desc "The modern API client that lives in your terminal"
+            desc "Modern API client that lives in your terminal"
             homepage "https://github.com/${GITHUB_REPOSITORY}"
             url "${URL}"
             sha256 "${SHA256}"
             license "Apache-2.0"
 
-            depends_on "python@3.12"
             depends_on "rust" => :build # pydantic-core / watchfiles build from sdist
+            depends_on "libyaml" # pyyaml links libyaml at runtime
+            depends_on "python@3.12"
 
             def install
               virtualenv_install_with_resources
@@ -85,11 +86,13 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          if git diff --quiet -- Formula/posting.rb; then
+          # Stage first so the diff check also catches a brand-new formula
+          # file (untracked files are invisible to `git diff`).
+          git add Formula/posting.rb
+          if git diff --cached --quiet; then
             echo "Formula already up to date; nothing to commit."
             exit 0
           fi
 
-          git add Formula/posting.rb
           git commit -m "posting ${VERSION}"
           git push
