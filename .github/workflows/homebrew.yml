@@ -16,6 +16,15 @@ jobs:
   homebrew:
     runs-on: macos-latest
     steps:
+      - name: Clone tap
+        env:
+          HOMEBREW_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+        run: |
+          set -euo pipefail
+          TAP_DIR="$(brew --repository)/Library/Taps/sg004baa/homebrew-tap"
+          git clone "https://x-access-token:${HOMEBREW_TAP_TOKEN}@github.com/sg004baa/homebrew-tap.git" "$TAP_DIR"
+          echo "TAP_DIR=$TAP_DIR" >> "$GITHUB_ENV"
+
       - name: Generate formula
         id: formula
         env:
@@ -30,8 +39,8 @@ jobs:
 
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
-          mkdir -p Formula
-          cat > Formula/posting.rb <<EOF
+          mkdir -p "$TAP_DIR/Formula"
+          cat > "$TAP_DIR/Formula/posting.rb" <<EOF
           class Posting < Formula
             include Language::Python::Virtualenv
 
@@ -62,27 +71,17 @@ jobs:
           set -euo pipefail
           # Resolves every PyPI dependency from the project's pyproject.toml
           # and injects `resource` blocks into the formula in-place.
-          brew update-python-resources ./Formula/posting.rb
+          brew update-python-resources sg004baa/tap/posting
 
       - name: Audit formula
-        run: brew audit --formula --strict ./Formula/posting.rb || true
-
-      - name: Checkout tap
-        uses: actions/checkout@v4
-        with:
-          repository: sg004baa/homebrew-tap
-          token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
-          path: tap
+        run: brew audit --strict sg004baa/tap/posting || true
 
       - name: Commit and push formula
         env:
           VERSION: ${{ steps.formula.outputs.version }}
         run: |
           set -euo pipefail
-          mkdir -p tap/Formula
-          cp Formula/posting.rb tap/Formula/posting.rb
-
-          cd tap
+          cd "$TAP_DIR"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
