@@ -62,7 +62,7 @@ jobs:
           set -euo pipefail
           # Resolves every PyPI dependency from the project's pyproject.toml
           # and injects `resource` blocks into the formula in-place.
-          brew update-python-resources --formula ./Formula/posting.rb
+          brew update-python-resources ./Formula/posting.rb
 
       - name: Audit formula
         run: brew audit --formula --strict ./Formula/posting.rb || true
