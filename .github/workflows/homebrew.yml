@@ -1,8 +1,9 @@
 name: Update Homebrew Tap
 
 # Triggered when a version tag (e.g. v2.10.0) is pushed to main.
-# Builds a Homebrew formula with fully-resolved Python resources and
-# pushes it to sg004baa/homebrew-tap so `brew install sg004baa/tap/posting` works.
+# Generates a Homebrew formula (deps installed from PyPI wheels at install
+# time) and pushes it to sg004baa/homebrew-tap so
+# `brew install sg004baa/tap/posting` works.
 
 on:
   push:
@@ -50,29 +51,24 @@ jobs:
             sha256 "${SHA256}"
             license "Apache-2.0"
 
-            depends_on "rust" => :build # pydantic-core / watchfiles build from sdist
-            depends_on "libyaml" # pyyaml links libyaml at runtime
             depends_on "python@3.12"
 
             def install
-              virtualenv_install_with_resources
+              # Install posting from source but let pip pull its dependencies as
+              # prebuilt PyPI wheels. Several transitive deps (e.g. the
+              # tree-sitter grammars textual[syntax] pins) ship broken sdists
+              # that cannot compile, and others (pydantic-core, watchfiles)
+              # would otherwise require a full rust/llvm toolchain to build.
+              virtualenv_create(libexec, "python3.12")
+              system libexec/"bin/pip", "install", buildpath
+              bin.install_symlink libexec/"bin/posting"
             end
 
             test do
-              assert_match "API client", shell_output("#{bin}/posting --help")
+              assert_match "TUI for testing HTTP APIs", shell_output("#{bin}/posting --help")
             end
           end
           EOF
-
-      - name: Fill Python resource stanzas
-        env:
-          HOMEBREW_NO_INSTALL_FROM_API: "1"
-          HOMEBREW_NO_AUTO_UPDATE: "1"
-        run: |
-          set -euo pipefail
-          # Resolves every PyPI dependency from the project's pyproject.toml
-          # and injects `resource` blocks into the formula in-place.
-          brew update-python-resources sg004baa/tap/posting
 
       - name: Audit formula
         run: brew audit --strict sg004baa/tap/posting || true
