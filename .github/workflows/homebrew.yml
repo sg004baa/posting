@@ -1,0 +1,96 @@
+name: Update Homebrew Tap
+
+# Triggered when a version tag (e.g. v2.10.0) is pushed to main.
+# Builds a Homebrew formula with fully-resolved Python resources and
+# pushes it to sg004baa/homebrew-tap so `brew install sg004baa/tap/posting` works.
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+
+jobs:
+  homebrew:
+    runs-on: macos-latest
+    steps:
+      - name: Generate formula
+        id: formula
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+
+          VERSION="${TAG#v}"
+          URL="https://github.com/${GITHUB_REPOSITORY}/archive/refs/tags/${TAG}.tar.gz"
+          SHA256="$(curl -fsSL "$URL" | shasum -a 256 | cut -d' ' -f1)"
+
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+          mkdir -p Formula
+          cat > Formula/posting.rb <<EOF
+          class Posting < Formula
+            include Language::Python::Virtualenv
+
+            desc "The modern API client that lives in your terminal"
+            homepage "https://github.com/${GITHUB_REPOSITORY}"
+            url "${URL}"
+            sha256 "${SHA256}"
+            license "Apache-2.0"
+
+            depends_on "python@3.12"
+            depends_on "rust" => :build # pydantic-core / watchfiles build from sdist
+
+            def install
+              virtualenv_install_with_resources
+            end
+
+            test do
+              assert_match "API client", shell_output("#{bin}/posting --help")
+            end
+          end
+          EOF
+
+      - name: Fill Python resource stanzas
+        env:
+          HOMEBREW_NO_INSTALL_FROM_API: "1"
+          HOMEBREW_NO_AUTO_UPDATE: "1"
+        run: |
+          set -euo pipefail
+          # Resolves every PyPI dependency from the project's pyproject.toml
+          # and injects `resource` blocks into the formula in-place.
+          brew update-python-resources --formula ./Formula/posting.rb
+
+      - name: Audit formula
+        run: brew audit --formula --strict ./Formula/posting.rb || true
+
+      - name: Checkout tap
+        uses: actions/checkout@v4
+        with:
+          repository: sg004baa/homebrew-tap
+          token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+          path: tap
+
+      - name: Commit and push formula
+        env:
+          VERSION: ${{ steps.formula.outputs.version }}
+        run: |
+          set -euo pipefail
+          mkdir -p tap/Formula
+          cp Formula/posting.rb tap/Formula/posting.rb
+
+          cd tap
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if git diff --quiet -- Formula/posting.rb; then
+            echo "Formula already up to date; nothing to commit."
+            exit 0
+          fi
+
+          git add Formula/posting.rb
+          git commit -m "posting ${VERSION}"
+          git push

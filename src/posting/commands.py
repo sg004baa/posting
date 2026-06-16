@@ -1,14 +1,73 @@
 from functools import partial
-from typing import TYPE_CHECKING, cast
-from textual.command import DiscoveryHit, Hit, Hits, Provider
+from typing import TYPE_CHECKING, Any, NamedTuple, Sequence, TypeAlias, cast
+from textual.command import (
+    DiscoveryHit,
+    Hit,
+    Hits,
+    Provider,
+    SimpleProvider as TextualSimpleProvider,
+)
 from textual.types import IgnoreReturnCallbackType
 from posting.widgets.load_env_file_dialog import show_load_env_file_dialog
 
 if TYPE_CHECKING:
     from posting.app import Posting
+    from textual.screen import Screen
 
 
 CommandType = tuple[str, IgnoreReturnCallbackType, str, bool]
+
+
+class SimpleCommand(NamedTuple):
+    name: str
+    callback: IgnoreReturnCallbackType
+    help_text: str | None = None
+    search_text: str = ""
+
+
+CommandListItem: TypeAlias = (
+    SimpleCommand
+    | tuple[str, IgnoreReturnCallbackType, str | None]
+    | tuple[str, IgnoreReturnCallbackType]
+)
+
+
+class SimpleProvider(TextualSimpleProvider):
+    def __init__(
+        self, screen: "Screen[Any]", commands: Sequence[CommandListItem]
+    ) -> None:
+        super().__init__(screen, [])
+        self._commands: list[SimpleCommand] = []
+        for command in commands:
+            if isinstance(command, SimpleCommand):
+                self._commands.append(command)
+            elif len(command) in (2, 3):
+                self._commands.append(SimpleCommand(*command))
+            else:
+                raise ValueError(f"Invalid command: {command}")
+
+    async def discover(self) -> Hits:
+        for command in self._commands:
+            yield DiscoveryHit(
+                command.name,
+                command.callback,
+                help=command.help_text,
+            )
+
+    async def search(self, query: str) -> Hits:
+        matcher = self.matcher(query)
+        for command in self._commands:
+            match = max(
+                matcher.match(command.name),
+                matcher.match(command.search_text),
+            )
+            if match > 0:
+                yield Hit(
+                    match,
+                    matcher.highlight(command.name),
+                    command.callback,
+                    help=command.help_text,
+                )
 
 
 class PostingProvider(Provider):

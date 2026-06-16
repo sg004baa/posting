@@ -137,7 +137,7 @@ class TextAreaFooter(Horizontal):
 class PostingTextArea(TextArea):
     BINDINGS = [
         Binding("f3,ctrl+P", "open_in_pager", "Pager", id="open-in-pager"),
-        Binding("f4,ctrl+E", "open_in_editor", "Editor", id="open-in-editor"),
+        Binding("f4,ctrl+e", "open_in_editor", "Editor", id="open-in-editor"),
     ]
 
     OPENING_BRACKETS = {
@@ -384,7 +384,7 @@ class ReadOnlyTextArea(PostingTextArea):
         Binding(
             "home,ctrl+a,0,^", "cursor_line_start", "cursor line start", show=False
         ),
-        Binding("end,ctrl+e,$", "cursor_line_end", "cursor line end", show=False),
+        Binding("end,$", "cursor_line_end", "cursor line end", show=False),
         Binding("pageup,ctrl+b", "cursor_page_up", "cursor page up", show=False),
         Binding("pagedown,ctrl+f", "cursor_page_down", "cursor page down", show=False),
         Binding("ctrl+d", "cursor_half_page_down", "cursor half page down", show=False),

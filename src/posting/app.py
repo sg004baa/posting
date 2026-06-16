@@ -12,12 +12,7 @@ from textual.content import Content
 
 from posting.importing.curl import CurlImport
 from textual import messages, on, log, work
-from textual.command import (
-    CommandListItem,
-    CommandPalette,
-    SimpleCommand,
-    SimpleProvider,
-)
+from textual.command import CommandPalette
 from textual.css.query import NoMatches
 from textual.events import Click
 from textual.reactive import Reactive, reactive
@@ -42,7 +37,12 @@ from posting.collection import (
     RequestModel,
 )
 
-from posting.commands import PostingProvider
+from posting.commands import (
+    CommandListItem,
+    PostingProvider,
+    SimpleCommand,
+    SimpleProvider,
+)
 from posting.config import SETTINGS, Settings
 from posting.jump_overlay import JumpOverlay
 from posting.jumper import Jumper
@@ -541,6 +541,12 @@ class MainScreen(Screen[None]):
         self.cookies.update(event.response.cookies)
         self.response_trace.trace_complete()
 
+        if (
+            self.settings.auto_save_on_response
+            and self.collection_tree.currently_open is not None
+        ):
+            self._save_open_request_to_disk()
+
     @on(CollectionTree.RequestSelected)
     def on_request_selected(self, event: CollectionTree.RequestSelected) -> None:
         """Load a request model into the UI when a request is selected."""
@@ -722,7 +728,24 @@ class MainScreen(Screen[None]):
             # No further action is required.
             return
 
-        # In this case, we're saving an existing request to disk.
+        save_path = self._save_open_request_to_disk()
+        if save_path is not None:
+            try:
+                path_to_display = str(save_path.resolve().relative_to(Path.cwd()))
+            except ValueError:
+                path_to_display = save_path.name
+
+            self.notify(
+                title="Request saved",
+                message=path_to_display,
+                timeout=3,
+            )
+
+    def _save_open_request_to_disk(self) -> Path | None:
+        """Save the currently open request without starting the new request flow."""
+        if self.collection_tree.currently_open is None:
+            return None
+
         request_model = self.build_request_model(self.request_options.to_model())
         assert isinstance(request_model, RequestModel), (
             "currently open node should contain a request model"
@@ -732,18 +755,9 @@ class MainScreen(Screen[None]):
         # on disk, or the new location on disk which was assigned during the "new request flow"
         save_path = request_model.path
         if save_path is not None:
-            try:
-                path_to_display = str(save_path.resolve().relative_to(Path.cwd()))
-            except ValueError:
-                path_to_display = save_path.name
-
             request_model.save_to_disk(save_path)
             self.collection_browser.update_currently_open_node(request_model)
-            self.notify(
-                title="Request saved",
-                message=path_to_display,
-                timeout=3,
-            )
+        return save_path
 
     async def action_new_request(self) -> None:
         """Open the new request flow."""
@@ -988,6 +1002,7 @@ class MainScreen(Screen[None]):
                         if node.data.path
                         else ""
                     ),
+                    search_text=node.data.url,
                 )
                 for node in collection_tree_nodes
                 if isinstance(node.data, RequestModel)
