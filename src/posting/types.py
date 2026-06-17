@@ -1,6 +1,4 @@
-from typing import Literal, Optional, Tuple, Union
-
-PostingLayout = Literal["horizontal", "vertical"]
+from typing import Optional, Tuple, Union
 
 # From httpx - seems to not be public.
 CertTypes = Union[

@@ -52,7 +52,7 @@ from posting.themes import (
     load_user_theme,
     load_user_themes,
 )
-from posting.types import CertTypes, PostingLayout
+from posting.types import CertTypes
 from posting.user_host import get_user_host_string
 from posting.variables import (
     SubstitutionError,
@@ -184,8 +184,6 @@ class MainScreen(Screen[None]):
 
     selected_method: Reactive[HttpRequestMethod] = reactive("GET", init=False)
     """The currently selected method of the request."""
-    current_layout: Reactive[PostingLayout] = reactive("vertical", init=False)
-    """The current layout of the app."""
     expanded_section: Reactive[Literal["request", "response"] | None] = reactive(
         None, init=False
     )
@@ -196,21 +194,17 @@ class MainScreen(Screen[None]):
     def __init__(
         self,
         collection: Collection,
-        layout: PostingLayout,
         environment_files: tuple[Path, ...],
     ) -> None:
         super().__init__()
         self.collection = collection
         self.cookies: httpx.Cookies = httpx.Cookies()
-        self._initial_layout: PostingLayout = layout
         self.environment_files = environment_files
         self.settings = SETTINGS.get()
         self.jumper: Jumper | None = None
         self.posting = cast("Posting", self.app)
 
     def on_mount(self) -> None:
-        self.current_layout = self._initial_layout
-
         # If the header is not visible, the URL Bar is one cell higher.
         is_header_visible = self.settings.heading.visible
         self.app.set_class(not is_header_visible, "-header-hidden")
@@ -248,19 +242,20 @@ class MainScreen(Screen[None]):
                 "--content-tab-response-cookies-pane": "d",
                 "--content-tab-response-scripts-pane": "f",
                 "--content-tab-response-trace-pane": "g",
+                "--content-tab-response-sent-request-pane": "h",
             },
             screen=self,
         )
 
     def compose(self) -> ComposeResult:
         yield AppHeader()
-        yield UrlBar()
         with AppBody():
             collection_browser = CollectionBrowser(collection=self.collection)
             collection_browser.display = (
                 self.settings.collection_browser.show_on_startup
             )
             yield collection_browser
+            yield UrlBar()
             yield RequestEditor()
             yield ResponseArea()
 
@@ -762,13 +757,6 @@ class MainScreen(Screen[None]):
     async def action_new_request(self) -> None:
         """Open the new request flow."""
         await self.collection_tree.new_request_flow(None)
-
-    def watch_current_layout(self, layout: Literal["horizontal", "vertical"]) -> None:
-        """Update the current layout of the app to be horizontal or vertical."""
-        classes = {"horizontal", "vertical"}
-        other_class = classes.difference({layout}).pop()
-        self.app_body.add_class(f"layout-{layout}")
-        self.app_body.remove_class(f"layout-{other_class}")
 
     def watch_expanded_section(
         self, section: Literal["request", "response"] | None
@@ -1468,13 +1456,9 @@ class Posting(App[None], inherit_bindings=False):
     def get_default_screen(self) -> MainScreen:
         self.main_screen = MainScreen(
             collection=self.collection,
-            layout=self.settings.layout,
             environment_files=self.environment_files,
         )
         return self.main_screen
-
-    def command_layout(self, layout: Literal["vertical", "horizontal"]) -> None:
-        self.main_screen.current_layout = layout
 
     def command_toggle_spacing(self) -> None:
         self.spacing = "compact" if self.spacing == "standard" else "standard"
@@ -1655,7 +1639,7 @@ class Posting(App[None], inherit_bindings=False):
         )
         return self.push_screen(palette)
 
-    async def action_help(self) -> None:
+    def action_help(self) -> None:
         focused = self.focused
 
         def reset_focus(_) -> None:
@@ -1665,7 +1649,7 @@ class Posting(App[None], inherit_bindings=False):
         self.set_focus(None)
         from posting.help_screen import HelpScreen
 
-        await self.push_screen(HelpScreen(widget=focused), callback=reset_focus)
+        self.push_screen(HelpScreen(widget=focused), callback=reset_focus)
 
     def exit(
         self,

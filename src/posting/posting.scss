@@ -14,6 +14,19 @@ $empty-hatch: right $surface-lighten-1 70%;
   }
 }
 
+App,
+Posting {
+  background: transparent;
+
+  &.-modal-opaque {
+    background: $background;
+
+    & MainScreen {
+      background: $background;
+    }
+  }
+}
+
 Posting {
   &.-compact {
     & AppHeader {
@@ -72,7 +85,7 @@ Posting {
     }
 
     & RequestEditor {
-      background: $surface 25%;
+      background: transparent;
     }
 
     & KeyValueInput {
@@ -97,7 +110,7 @@ Posting {
     }
     
     & ResponseArea {
-      background: $surface 10%;
+      background: transparent;
     }
 
     & .textual-jump-label {
@@ -210,7 +223,11 @@ AutoComplete {
 }
 
 Screen {
-  background: $background;
+  background: transparent;
+}
+
+MainScreen {
+  background: transparent;
 }
 
 ModalScreen {
@@ -281,31 +298,12 @@ AppHeader {
 }
 
 AppBody {
+  background: transparent;
   padding: 0 2;
+  layout: vertical;
 
-  &.layout-horizontal {
+  & KeyValueInput #key-value-inputs {
     layout: horizontal;
-
-    & KeyValueInput {
-      dock: top;
-      & #key-value-inputs {
-        layout: vertical;
-        height: 3;
-        & Button {
-          width: 100%;
-        }
-      }
-
-    }
-
-  }
-  
-  &.layout-vertical {
-    layout: vertical;
-    
-    & KeyValueInput #key-value-inputs {
-      layout: horizontal;
-    }
   }
 }
 
@@ -321,9 +319,10 @@ DataTable {
 }
 
 PostingDataTable {
+    background: transparent;
     & > .datatable--header {
       color: $text-success;
-      background: $surface;
+      background: transparent;
     }
     & > .datatable--header-cursor {
       color: $text;
@@ -335,7 +334,7 @@ PostingDataTable {
       }
       & > .datatable--header-cursor {
         color: $text-success;
-        background: $surface;
+        background: transparent;
       }
       
     }
@@ -558,7 +557,7 @@ CollectionBrowser {
   height: 1fr;
   dock: left;
   width: auto;
-  max-width: 33%;
+  max-width: 25%;
 
   & Tree {
       color: $foreground 80%;
@@ -577,19 +576,21 @@ CollectionBrowser {
 }
 
 TextArea {
+  background: transparent;
   border: none;
   &:focus {
+      background: transparent;
       border: none;
   }
 
-  &.empty {
-    & .text-area--cursor-line {
-      background: transparent;
-    }
+  & .text-area--gutter,
+  & .text-area--cursor-line,
+  & .text-area--cursor-gutter {
+    background: transparent;
+  }
 
-    & .text-area--cursor-gutter {
-      background: transparent;
-    }
+  &.empty {
+    background: transparent;
   }
 
   &#description-textarea {
@@ -642,6 +643,18 @@ RequestBodyTextArea {
 }
 
 ResponseTextArea {
+  background: transparent;
+}
+
+/* request/response pane の中身まで端末背景を透過させる。
+   中間コンテナ（TabbedContent/ContentSwitcher/TabPane/ContentTabs）と
+   エディタ・テーブルの地は Textual 既定で不透明 $surface を持つため明示的に消す。 */
+PostingTabbedContent,
+PostingTabbedContent ContentSwitcher,
+PostingTabbedContent TabPane,
+PostingTabbedContent ContentTabs,
+TextEditor,
+PostingDataTable {
   background: transparent;
 }
 

@@ -4,6 +4,7 @@ from textual.app import ComposeResult
 from textual.binding import Binding
 from textual.containers import Vertical, VerticalScroll
 from textual.screen import ModalScreen
+from textual.color import Color
 from textual.widget import Widget
 from textual.widgets import Label, Markdown
 
@@ -48,6 +49,7 @@ class HelpModalFocusNote(Label):
 class HelpScreen(ModalScreen[None]):
     DEFAULT_CSS = """
     HelpScreen {
+        background: $background;
         align: center middle;
         & > VerticalScroll {
             background: $background;
@@ -123,6 +125,19 @@ class HelpScreen(ModalScreen[None]):
     ) -> None:
         super().__init__(name, id, classes)
         self.widget = widget
+        self._previous_screen_background: Color | None = None
+
+    def on_mount(self) -> None:
+        if len(self.app.screen_stack) < 2:
+            return
+        background_screen = self.app.screen_stack[-2]
+        self._previous_screen_background = background_screen.styles.background
+        background_screen.styles.background = self.app.theme_variables["background"]
+
+    def on_unmount(self) -> None:
+        if self._previous_screen_background is None or len(self.app.screen_stack) < 2:
+            return
+        self.app.screen_stack[-2].styles.background = self._previous_screen_background
 
     def compose(self) -> ComposeResult:
         with VerticalScroll() as vs:
