@@ -11,6 +11,56 @@ import yaml
 from posting.config import SETTINGS
 
 
+TRANSPARENT = "transparent"
+BACKGROUND_VARIABLE_NAMES = ("background", "surface", "panel")
+SHADE_SUFFIXES = (
+    "-darken-3",
+    "-darken-2",
+    "-darken-1",
+    "",
+    "-lighten-1",
+    "-lighten-2",
+    "-lighten-3",
+)
+
+TRANSPARENT_BACKGROUND_VARIABLES = {
+    f"{name}{suffix}": TRANSPARENT
+    for name in BACKGROUND_VARIABLE_NAMES
+    for suffix in SHADE_SUFFIXES
+} | {
+    "accent-muted": TRANSPARENT,
+    "block-cursor-background": TRANSPARENT,
+    "block-cursor-blurred-background": TRANSPARENT,
+    "block-hover-background": TRANSPARENT,
+    "error-muted": TRANSPARENT,
+    "footer-background": TRANSPARENT,
+    "footer-description-background": TRANSPARENT,
+    "footer-item-background": TRANSPARENT,
+    "footer-key-background": TRANSPARENT,
+    "input-cursor-background": TRANSPARENT,
+    "input-selection-background": TRANSPARENT,
+    "link-background": TRANSPARENT,
+    "link-background-hover": TRANSPARENT,
+    "primary-muted": TRANSPARENT,
+    "scrollbar-background": TRANSPARENT,
+    "scrollbar-background-active": TRANSPARENT,
+    "scrollbar-background-hover": TRANSPARENT,
+    "scrollbar-corner-color": TRANSPARENT,
+    "secondary-muted": TRANSPARENT,
+    "success-muted": TRANSPARENT,
+    "surface-active": TRANSPARENT,
+    "warning-muted": TRANSPARENT,
+}
+
+
+def with_transparent_background(
+    variables: dict[str, str] | None = None,
+) -> dict[str, str]:
+    result = dict(variables or {})
+    result.update(TRANSPARENT_BACKGROUND_VARIABLES)
+    return result
+
+
 class PostingTextAreaTheme(BaseModel):
     gutter: str | None = Field(default=None)
     """The style to apply to the gutter."""
@@ -170,7 +220,7 @@ class Theme(BaseModel):
 
         theme_data = {**colors, **theme_data}
 
-        variables = {}
+        variables = with_transparent_background()
         if self.url:
             url_styles = self.url.fill_with_defaults(self)
             variables.update(
@@ -375,10 +425,7 @@ BUILTIN_THEMES: dict[str, TextualTheme] = {
         surface=galaxy_surface.hex,
         panel=galaxy_panel.hex,
         dark=True,
-        variables={
-            "input-cursor-background": "#C45AFF",
-            "footer-background": "transparent",
-        },
+        variables=with_transparent_background(),
     ),
     "nebula": TextualTheme(
         name="nebula",
@@ -388,13 +435,11 @@ BUILTIN_THEMES: dict[str, TextualTheme] = {
         error="#FF5555",
         success="#50FA7B",
         accent="#FF79C6",
+        background="#0D2137",
         surface="#193549",
         panel="#1F4662",
-        background="#0D2137",
         dark=True,
-        variables={
-            "input-selection-background": "#4A9CFF 35%",
-        },
+        variables=with_transparent_background(),
     ),
     "sunset": TextualTheme(
         name="sunset",
@@ -408,13 +453,12 @@ BUILTIN_THEMES: dict[str, TextualTheme] = {
         surface="#362C47",
         panel="#413555",
         dark=True,
-        variables={
-            "input-cursor-background": "#FF7E5F",
-            "input-selection-background": "#FF7E5F 35%",
-            "footer-background": "transparent",
-            "button-color-foreground": "#2B2139",
-            "method-get": "#FF7E5F",
-        },
+        variables=with_transparent_background(
+            {
+                "button-color-foreground": "#2B2139",
+                "method-get": "#FF7E5F",
+            }
+        ),
     ),
     "aurora": TextualTheme(
         name="aurora",
@@ -428,13 +472,12 @@ BUILTIN_THEMES: dict[str, TextualTheme] = {
         surface="#142942",
         panel="#1E3655",
         dark=True,
-        variables={
-            "input-cursor-background": "#45FFB3",
-            "input-selection-background": "#45FFB3 35%",
-            "footer-background": "transparent",
-            "button-color-foreground": "#0A1A2F",
-            "method-post": "#DF7BFF",
-        },
+        variables=with_transparent_background(
+            {
+                "button-color-foreground": "#0A1A2F",
+                "method-post": "#DF7BFF",
+            }
+        ),
     ),
     "nautilus": TextualTheme(
         name="nautilus",
@@ -448,6 +491,7 @@ BUILTIN_THEMES: dict[str, TextualTheme] = {
         surface="#003366",
         panel="#005A8C",
         dark=True,
+        variables=with_transparent_background(),
     ),
     "cobalt": TextualTheme(
         name="cobalt",
@@ -457,13 +501,11 @@ BUILTIN_THEMES: dict[str, TextualTheme] = {
         error="#E63946",
         success="#4CAF50",
         accent="#D94E64",
+        background="#1F262A",
         surface="#27343B",
         panel="#2D3E46",
-        background="#1F262A",
         dark=True,
-        variables={
-            "input-selection-background": "#4A9CFF 35%",
-        },
+        variables=with_transparent_background(),
     ),
     "twilight": TextualTheme(
         name="twilight",
@@ -477,6 +519,7 @@ BUILTIN_THEMES: dict[str, TextualTheme] = {
         surface="#3B3B6D",
         panel="#4C516D",
         dark=True,
+        variables=with_transparent_background(),
     ),
     "hacker": TextualTheme(
         name="hacker",
@@ -490,15 +533,17 @@ BUILTIN_THEMES: dict[str, TextualTheme] = {
         surface="#0A0A0A",
         panel="#111111",
         dark=True,
-        variables={
-            "method-get": "#00FF00",
-            "method-post": "#00DD00",
-            "method-put": "#00BB00",
-            "method-delete": "#FF0000",
-            "method-patch": "#00FF33",
-            "method-options": "#3A9F3A",
-            "method-head": "#00FF66",
-        },
+        variables=with_transparent_background(
+            {
+                "method-get": "#00FF00",
+                "method-post": "#00DD00",
+                "method-put": "#00BB00",
+                "method-delete": "#FF0000",
+                "method-patch": "#00FF33",
+                "method-options": "#3A9F3A",
+                "method-head": "#00FF66",
+            }
+        ),
     ),
     "manuscript": TextualTheme(
         name="manuscript",
@@ -512,21 +557,20 @@ BUILTIN_THEMES: dict[str, TextualTheme] = {
         surface="#EBE6D9",  # Textured paper
         panel="#E0DAC8",  # Parchment
         dark=False,
-        variables={
-            "input-cursor-background": "#2C4251",
-            "input-selection-background": "#2C4251 25%",
-            "footer-background": "#2C4251",
-            "footer-key-foreground": "#F5F1E9",
-            "footer-description-foreground": "#F5F1E9",
-            "button-color-foreground": "#F5F1E9",
-            "method-get": "#2C4251",  # Ink blue
-            "method-post": "#2D5A27",  # Library green
-            "method-put": "#6B4423",  # Leather brown
-            "method-delete": "#A94442",  # Red ink
-            "method-patch": "#8B4513",  # Rich leather
-            "method-options": "#4A4A4A",  # Dark gray ink
-            "method-head": "#5C5C5C",  # Gray ink
-        },
+        variables=with_transparent_background(
+            {
+                "footer-key-foreground": "#F5F1E9",
+                "footer-description-foreground": "#F5F1E9",
+                "button-color-foreground": "#F5F1E9",
+                "method-get": "#2C4251",  # Ink blue
+                "method-post": "#2D5A27",  # Library green
+                "method-put": "#6B4423",  # Leather brown
+                "method-delete": "#A94442",  # Red ink
+                "method-patch": "#8B4513",  # Rich leather
+                "method-options": "#4A4A4A",  # Dark gray ink
+                "method-head": "#5C5C5C",  # Gray ink
+            }
+        ),
     ),
     "hypernova": TextualTheme(
         name="hypernova",
@@ -541,20 +585,19 @@ BUILTIN_THEMES: dict[str, TextualTheme] = {
         surface="#121225",  # deep navy surface
         panel="#1A1A32",  # indigo panel
         dark=True,
-        variables={
-            "input-cursor-background": "#4CC9F0",
-            "input-selection-background": "#4CC9F0 30%",
-            "footer-background": "transparent",
-            "button-color-foreground": "#0B0B12",
-            # Method colors tuned for consistent neon semantics
-            "method-get": "#00F5D4",
-            "method-post": "#80FF72",
-            "method-put": "#FEE440",
-            "method-delete": "#F72585",
-            "method-patch": "#7B2FF7",
-            "method-options": "#4CC9F0",
-            "method-head": "#F15BB5",
-        },
+        variables=with_transparent_background(
+            {
+                "button-color-foreground": "#0B0B12",
+                # Method colors tuned for consistent neon semantics
+                "method-get": "#00F5D4",
+                "method-post": "#80FF72",
+                "method-put": "#FEE440",
+                "method-delete": "#F72585",
+                "method-patch": "#7B2FF7",
+                "method-options": "#4CC9F0",
+                "method-head": "#F15BB5",
+            }
+        ),
     ),
     "synthwave": TextualTheme(
         name="synthwave",
@@ -569,19 +612,18 @@ BUILTIN_THEMES: dict[str, TextualTheme] = {
         surface="#1A0F26",  # dark purple surface
         panel="#251833",  # purple panel
         dark=True,
-        variables={
-            "input-cursor-background": "#FF006E",
-            "input-selection-background": "#FF006E 25%",
-            "footer-background": "transparent",
-            "button-color-foreground": "#0F0A19",
-            # Method colors with synthwave palette
-            "method-get": "#3A86FF",
-            "method-post": "#06FFA5",
-            "method-put": "#FFBE0B",
-            "method-delete": "#FB5607",
-            "method-patch": "#8338EC",
-            "method-options": "#FF006E",
-            "method-head": "#C77DFF",
-        },
+        variables=with_transparent_background(
+            {
+                "button-color-foreground": "#0F0A19",
+                # Method colors with synthwave palette
+                "method-get": "#3A86FF",
+                "method-post": "#06FFA5",
+                "method-put": "#FFBE0B",
+                "method-delete": "#FB5607",
+                "method-patch": "#8338EC",
+                "method-options": "#FF006E",
+                "method-head": "#C77DFF",
+            }
+        ),
     ),
 }

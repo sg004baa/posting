@@ -4,7 +4,6 @@ from textual.app import ComposeResult
 from textual.binding import Binding
 from textual.containers import Vertical, VerticalScroll
 from textual.screen import ModalScreen
-from textual.color import Color
 from textual.widget import Widget
 from textual.widgets import Label, Markdown
 
@@ -25,7 +24,7 @@ class HelpModalHeader(Label):
 
     DEFAULT_CSS = """
     HelpModalHeader {
-        background: $background-lighten-1;
+        background: transparent;
         color: $text-muted;
     }
     """
@@ -36,7 +35,7 @@ class HelpModalFooter(Label):
 
     DEFAULT_CSS = """
     HelpModalFooter {
-        background: $background-lighten-1;
+        background: transparent;
         color: $text-muted;
     }
     """
@@ -49,16 +48,16 @@ class HelpModalFocusNote(Label):
 class HelpScreen(ModalScreen[None]):
     DEFAULT_CSS = """
     HelpScreen {
-        background: $background;
+        background: transparent;
         align: center middle;
         & > VerticalScroll {
-            background: $background;
+            background: transparent;
             padding: 1 2;
             width: 65%;
             height: 80%;
             border: wide $background-lighten-2;
             border-title-color: $text;
-            border-title-background: $background;
+            border-title-background: transparent;
             border-title-style: bold;
         }
 
@@ -93,7 +92,7 @@ class HelpScreen(ModalScreen[None]):
         & #bindings-title {
             width: 1fr;
             content-align: center middle;
-            background: $background-lighten-1;
+            background: transparent;
             color: $text-muted;
         }
 
@@ -125,19 +124,6 @@ class HelpScreen(ModalScreen[None]):
     ) -> None:
         super().__init__(name, id, classes)
         self.widget = widget
-        self._previous_screen_background: Color | None = None
-
-    def on_mount(self) -> None:
-        if len(self.app.screen_stack) < 2:
-            return
-        background_screen = self.app.screen_stack[-2]
-        self._previous_screen_background = background_screen.styles.background
-        background_screen.styles.background = self.app.theme_variables["background"]
-
-    def on_unmount(self) -> None:
-        if self._previous_screen_background is None or len(self.app.screen_stack) < 2:
-            return
-        self.app.screen_stack[-2].styles.background = self._previous_screen_background
 
     def compose(self) -> ComposeResult:
         with VerticalScroll() as vs:

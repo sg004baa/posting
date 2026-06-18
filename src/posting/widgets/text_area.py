@@ -170,8 +170,11 @@ class PostingTextArea(TextArea):
 
         theme.base_style = clear_background(theme.base_style)
         theme.gutter_style = clear_background(theme.gutter_style)
+        theme.cursor_style = clear_background(theme.cursor_style)
         theme.cursor_line_style = clear_background(theme.cursor_line_style)
         theme.cursor_line_gutter_style = clear_background(theme.cursor_line_gutter_style)
+        theme.bracket_matching_style = clear_background(theme.bracket_matching_style)
+        theme.selection_style = clear_background(theme.selection_style)
 
     def on_mount(self) -> None:
         self.indent_width = 2

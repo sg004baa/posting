@@ -81,7 +81,7 @@ class NewRequestModal(ModalScreen[NewRequestData | None]):
         & #file-suffix-label {
             width: auto;
             height: 1;
-            background: $surface;
+            background: transparent;
             color: $text-muted;
         }
 

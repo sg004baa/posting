@@ -1,12 +1,12 @@
-$empty-hatch: right $surface-lighten-1 70%;
+$empty-hatch: right transparent;
 
 * {
   scrollbar-color: $primary 10%;
   scrollbar-color-hover: $primary 80%;
   scrollbar-color-active: $primary;
-  scrollbar-background: $surface-darken-1;
-  scrollbar-background-hover: $surface-darken-1;
-  scrollbar-background-active: $surface-darken-1;
+  scrollbar-background: transparent;
+  scrollbar-background-hover: transparent;
+  scrollbar-background-active: transparent;
   scrollbar-size-vertical: 1;
 
   &:focus {
@@ -19,10 +19,10 @@ Posting {
   background: transparent;
 
   &.-modal-opaque {
-    background: $background;
+    background: transparent;
 
     & MainScreen {
-      background: $background;
+      background: transparent;
     }
   }
 }
@@ -61,25 +61,25 @@ Posting {
         & .-active {
           text-style: $block-cursor-text-style;
           color: $block-cursor-foreground;
-          background: $block-cursor-background;
+          background: transparent;
         }
       }
       &:blur Tab:enabled {
         &.-active {
-          background: $panel  ;
+          background: transparent;
         }
       }
     }
 
 
     & CollectionBrowser {
-      background: $surface 50%;
+      background: transparent;
       &:focus {
         outline: vkey $accent;
       }
       & RequestPreview {
         border-top: none;
-        background: $surface 100%;
+        background: transparent;
         padding: 0 1;
       }
     }
@@ -164,7 +164,7 @@ Posting {
     }
 
     & #theme-search-command-palette {
-      background: black 15%;
+      background: transparent;
       & > Vertical {
         height: auto;
         & CommandList {
@@ -195,21 +195,21 @@ ResponseArea {
   }
   &.success .border-title-status {
       color: $text-success;
-      background: $success-muted;
+      background: transparent;
   }
   &.warning .border-title-status {
       color: $text-warning;
-      background: $warning-muted;
+      background: transparent;
   }
   &.error .border-title-status {
       color: $text-error;
-      background: $error-muted;
+      background: transparent;
   }
 }
 
 AutoComplete {
   border-left: wide $accent;
-  background: $surface;
+  background: transparent;
   
   & AutoCompleteList {
     color: $text-muted;
@@ -218,7 +218,7 @@ AutoComplete {
 
   & .autocomplete--highlight-match {
     color: $text-accent;
-    background: $accent-muted;
+    background: transparent;
   }
 }
 
@@ -231,7 +231,7 @@ MainScreen {
 }
 
 ModalScreen {
-  background: black 30%;
+  background: transparent;
 }
 
 Footer {
@@ -246,15 +246,31 @@ HelpPanel {
     scrollbar-size-vertical: 1;
   }
 }
+
+Markdown,
+MarkdownBlockQuote,
+MarkdownFence,
+MarkdownTable,
+MarkdownTableOfContents,
+MarkdownTableOfContents > Tree,
+MarkdownViewer {
+  background: transparent;
+  background-tint: 0%;
+}
+
+MarkdownBlock > .code_inline {
+  background: transparent;
+}
+
 .modal-body {
-  background: $background;
+  background: transparent;
   padding: 1 2;
   width: 50%;
   height: auto;
   max-height: 70%;
   border: wide $background-lighten-2;
   border-title-color: $text;
-  border-title-background: $background;
+  border-title-background: transparent;
   border-title-style: bold;
 }
 
@@ -308,28 +324,55 @@ AppBody {
 }
 
 DataTable {
+  background: transparent;
   height: auto;
   width: 1fr;
   padding: 0 1;
+  &.datatable--fixed-cursor {
+      background: transparent;
+  }
   &:focus {
       width: 1fr;
       padding: 0;
       border-left: inner $accent;
+      background-tint: 0%;
   }
 }
 
 PostingDataTable {
     background: transparent;
+    background-tint: 0%;
     & > .datatable--header {
       color: $text-success;
       background: transparent;
     }
     & > .datatable--header-cursor {
       color: $text;
-      background: $block-cursor-background;
+      background: transparent;
+    }
+    & > .datatable--cursor,
+    & > .datatable--even-row,
+    & > .datatable--fixed,
+    & > .datatable--fixed-cursor,
+    & > .datatable--header-hover,
+    & > .datatable--hover,
+    & > .datatable--odd-row {
+      background: transparent;
+    }
+    &:focus {
+      background-tint: 0%;
+      & > .datatable--cursor,
+      & > .datatable--fixed-cursor,
+      & > .datatable--header,
+      & > .datatable--header-cursor {
+        background: transparent;
+      }
     }
     &:blur {
       & > .datatable--cursor {
+        background: transparent;
+      }
+      & > .datatable--fixed-cursor {
         background: transparent;
       }
       & > .datatable--header-cursor {
@@ -372,11 +415,19 @@ PostingDataTable {
 }
 
 Input {
+  background: transparent;
+  background-tint: 0%;
   border: none;
   width: 1fr;
   &:focus {
+      background: transparent;
+      background-tint: 0%;
       border: none;
       padding: 0 1;
+  }
+  & > .input--cursor,
+  & > .input--selection {
+      background: transparent;
   }
   &.error {
       border-left: thick $error;
@@ -384,7 +435,7 @@ Input {
 }
 
 PostingRichLog {
-  background: $surface 75%;
+  background: transparent;
   padding-left: 1;
   &:focus {
     border-left: wide $accent;
@@ -405,7 +456,7 @@ UrlBar {
       width: 11;
       height: 1;
       &:blur SelectCurrent {
-        background: $primary-muted;
+        background: transparent;
         #label {
           color: $text-primary;
         }
@@ -419,22 +470,22 @@ UrlBar {
     display: none;
     &.-success {
       color: $text-success;
-      background: $success-muted;
+      background: transparent;
     }
     &.-warning {
       color: $text-warning;
-      background: $warning-muted;
+      background: transparent;
     }
     &.-error {
       color: $text-error;
-      background: $error-muted;
+      background: transparent;
     }
   }
 
   & #trace-markers {
       padding: 0 1;
       display: none;
-      background: $surface;
+      background: transparent;
 
       &.has-events {
           display: block;
@@ -449,29 +500,29 @@ UrlBar {
   }
   & .complete-marker {
       color: $success;
-      background: $surface;
+      background: transparent;
   }
   & .failed-marker {
       color: $error;
-      background: $surface;
+      background: transparent;
   }
   & .started-marker {
       color: $warning;
-      background: $surface;
+      background: transparent;
   }
   & .not-started-marker {
       color: $text-muted 30%;
-      background: $surface;
+      background: transparent;
   }
 }
 
 SendRequestButton {
   min-width: 8;
-  background: $accent-muted;
+  background: transparent;
   color: $text-accent;
   text-style: b;
   &:hover {
-    background-tint: $text-accent 10%;
+    background-tint: 0%;
   }
 }
 
@@ -494,17 +545,17 @@ KeyValueEditor {
       height: auto;
     }
     &.edit-mode {
-        background: $accent-muted;
+        background: transparent;
         #editing-row-label {
           display: block;
         }
         #add-button {
             color: $text;
-            background: $accent;
+            background: transparent;
         }
         Input {
           color: $text;
-          background: $accent 10%;
+          background: transparent;
         }
     }
     & Input {
@@ -519,7 +570,7 @@ KeyValueEditor {
     }
   
     & Button {
-        background: $primary;
+        background: transparent;
         color: $text;
         text-style: none;
         min-width: 0;
@@ -528,7 +579,7 @@ KeyValueEditor {
         &:hover {
             text-style: b;
             border: none;
-            background: $primary-darken-1;
+            background: transparent;
         }
     }
   }
@@ -547,7 +598,7 @@ KeyValueEditor {
       }
       & #empty-message {
           color: $text-muted;
-          hatch: right $surface-lighten-1 70%;
+          hatch: $empty-hatch;
           display: block;
       }
   }
@@ -562,9 +613,19 @@ CollectionBrowser {
   & Tree {
       color: $foreground 80%;
       background: transparent;
+      background-tint: 0%;
       width: 1fr;
+      & > .tree--cursor,
+      & > .tree--highlight-line {
+        background: transparent;
+      }
       &:focus {
+        background-tint: 0%;
         color: $foreground;
+        & > .tree--cursor,
+        & > .tree--highlight-line {
+          background: transparent;
+        }
       }
   }
 
@@ -585,7 +646,10 @@ TextArea {
 
   & .text-area--gutter,
   & .text-area--cursor-line,
-  & .text-area--cursor-gutter {
+  & .text-area--cursor-gutter,
+  & .text-area--cursor,
+  & .text-area--matching-bracket,
+  & .text-area--selection {
     background: transparent;
   }
 
@@ -664,7 +728,7 @@ TextAreaFooter {
   width: 1fr;
 
   &:focus-within {
-      background: $primary-muted;
+      background: transparent;
   }
 
   &:disabled {
@@ -677,7 +741,7 @@ TextAreaFooter {
       
       & SelectCurrent {
         width: 8;
-        background: $surface;
+        background: transparent;
       }
       & SelectOverlay {
         width: 16;
@@ -694,9 +758,9 @@ TextAreaFooter {
         background: transparent;
       }
       &:focus {
-        background: $block-cursor-background;
+        background: transparent;
         & .toggle--button {
-          background: $block-cursor-background;
+          background: transparent;
         }
       }
   }
@@ -714,7 +778,7 @@ TextAreaFooter {
       margin-left: 1;
       &.visual-mode {
         color: $text-accent;
-        background: $accent-muted;
+        background: transparent;
         display: block;
       }
   }
@@ -722,7 +786,7 @@ TextAreaFooter {
   #rw-label {
       margin-left: 1;
       color: $text-warning;
-      background: $warning-muted;
+      background: transparent;
       padding: 0 1;
       display: none;
       &:disabled {
@@ -736,15 +800,23 @@ TextAreaFooter {
 
 
 Input {
+  background: transparent;
+  background-tint: 0%;
   padding: 0 1;
   height: 1;
   border: none;
+  & > .input--cursor,
+  & > .input--selection {
+    background: transparent;
+  }
   &.-invalid {
     padding-left: 0;
     border-left: outer $error;
   }
 
   &:focus {
+    background: transparent;
+    background-tint: 0%;
     padding-left: 0;
     border-left: outer $surface-lighten-1;
     &.-invalid {
@@ -754,9 +826,52 @@ Input {
 }
 
 Button {
+  background: transparent;
+  background-tint: 0%;
+  color: $text;
   padding: 0 1;
   height: 1;
   border: none;
+
+  &:focus,
+  &:hover,
+  &.-active {
+    background: transparent;
+    background-tint: 0%;
+    border: none;
+  }
+
+  &.-primary {
+    color: $text-primary;
+  }
+
+  &.-success {
+    color: $text-success;
+  }
+
+  &.-warning {
+    color: $text-warning;
+  }
+
+  &.-error {
+    color: $text-error;
+  }
+
+  &.-primary,
+  &.-success,
+  &.-warning,
+  &.-error {
+    background: transparent;
+    border: none;
+
+    &:focus,
+    &:hover,
+    &.-active {
+      background: transparent;
+      background-tint: 0%;
+      border: none;
+    }
+  }
 
   &:disabled {
     opacity: 40%;
@@ -764,19 +879,23 @@ Button {
 }
 
 CommandPalette {
-  background: black 33%;
+  background: transparent;
   
   & > Vertical {
+    background: transparent;
     margin-top: 2;
     width: 65vw;
     max-height: 65vh;
   }
   
   & #--input {
+    background: transparent;
     border: none;
     border-left: wide $accent;
     
     & CommandInput {
+      background: transparent;
+      background-tint: 0%;
       height: 3;
       border: none;
       padding: 1 2;
@@ -789,11 +908,27 @@ CommandPalette {
   }
   
   & CommandList {
+    background: transparent;
     border: none;
     border-left: wide $accent;
     padding-bottom: 1;
   }
 
+}
+
+OptionList,
+CommandList {
+  background: transparent;
+  background-tint: 0%;
+
+  &:focus {
+    background-tint: 0%;
+  }
+
+  & > .option-list--option-highlighted,
+  & > .option-list--option-hover {
+    background: transparent;
+  }
 }
 
 Select {
@@ -805,7 +940,7 @@ Select {
       color: $block-cursor-foreground;
     }
     SelectCurrent {
-      background: $block-cursor-background;
+      background: transparent;
       .arrow {
         color: $block-cursor-foreground;
       }
@@ -816,7 +951,7 @@ Select {
     height: 1;
     border: none;
     padding: 0 1;
-    background: $surface;
+    background: transparent;
 
     .arrow {
       color: $text-disabled;
@@ -824,8 +959,14 @@ Select {
   }
 
   & > SelectOverlay {
+    background: transparent;
+    background-tint: 0%;
     padding: 0;
     border: none;
+
+    &:focus {
+      background-tint: 0%;
+    }
   }
 
 }
@@ -833,7 +974,7 @@ Select {
 .textual-jump-label {
   dock: top;
   color: $text-accent;
-  background: $accent-muted;
+  background: transparent;
   text-style: bold;
   padding: 0 1;
   margin-right: 1;
@@ -847,9 +988,9 @@ Select {
   dock: bottom;
   height: 1;
   width: 1fr;
-  background: $accent-muted;
+  background: transparent;
   color: $text-accent;
-  hatch: right $accent 30%;
+  hatch: right transparent;
   
   & Label {
     width: auto;
