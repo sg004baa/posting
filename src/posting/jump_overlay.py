@@ -21,7 +21,7 @@ class JumpOverlay(ModalScreen[str | Widget | None]):
 
     DEFAULT_CSS = """\
     JumpOverlay {
-        background: transparent;
+        background: black 25%;
     }
     """
 

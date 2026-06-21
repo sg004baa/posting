@@ -11,7 +11,7 @@ class PostingTree(Tree[T]):
     PostingTree { 
         scrollbar-size-horizontal: 0;
         & .node-selected {
-            background: transparent;
+            background: $primary-lighten-1;
             color: $text;
             text-style: bold;
         }

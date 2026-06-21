@@ -5,16 +5,12 @@ import tempfile
 from dataclasses import dataclass
 from typing import Iterable
 
-from rich.style import Style
 from textual import events, on
 from textual.app import ComposeResult
 from textual.binding import Binding
 from textual.containers import Horizontal, Vertical
-from textual.geometry import Region
 from textual.message import Message
 from textual.reactive import Reactive, reactive
-from textual.scroll_view import ScrollView
-from textual.strip import Strip
 from textual.theme import Theme as TextualTheme
 from textual.widgets import Checkbox, Label, Select, TextArea
 from textual.widgets.text_area import (
@@ -151,30 +147,6 @@ class PostingTextArea(TextArea):
     }
 
     CLOSING_BRACKETS = {v: k for k, v in OPENING_BRACKETS.items()}
-
-    def render_lines(self, crop: Region) -> list[Strip]:
-        theme = self._theme
-        if theme:
-            theme.apply_css(self)
-            self._clear_theme_backgrounds(theme)
-        return ScrollView.render_lines(self, crop)
-
-    def _clear_theme_backgrounds(self, theme: TextAreaTheme) -> None:
-        def clear_background(style: Style | None) -> Style | None:
-            if style is None:
-                return None
-            style = style.copy()
-            style._bgcolor = None
-            style._hash = None
-            return style
-
-        theme.base_style = clear_background(theme.base_style)
-        theme.gutter_style = clear_background(theme.gutter_style)
-        theme.cursor_style = clear_background(theme.cursor_style)
-        theme.cursor_line_style = clear_background(theme.cursor_line_style)
-        theme.cursor_line_gutter_style = clear_background(theme.cursor_line_gutter_style)
-        theme.bracket_matching_style = clear_background(theme.bracket_matching_style)
-        theme.selection_style = clear_background(theme.selection_style)
 
     def on_mount(self) -> None:
         self.indent_width = 2

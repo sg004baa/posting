@@ -1,7 +1,6 @@
 from dataclasses import dataclass, field
 from typing import Any, Iterable, Self
 
-from rich.segment import Segment
 from rich.style import Style
 from rich.text import Text
 from textual import on, events
@@ -9,7 +8,7 @@ from textual.app import RenderResult
 from textual.binding import Binding
 from textual.color import Color
 from textual.coordinate import Coordinate
-from textual.filter import NO_DIM, DimFilter, dim_color
+from textual.filter import DimFilter
 from textual.markup import escape
 from textual.message import Message
 from textual.message_pump import MessagePump
@@ -23,38 +22,6 @@ try:
     import pyperclip
 except ImportError:
     pyperclip = None  # type: ignore[assignment]
-
-
-class TransparentDimFilter(DimFilter):
-    """A ``DimFilter`` that tolerates segments without a background color.
-
-    Posting renders its data tables with a transparent background, so cell
-    segments can carry ``bgcolor=None``. Textual's ``DimFilter`` assumes a
-    concrete background and raises ``AttributeError`` on ``None``; here we treat a
-    missing background as the blend background, keeping the cell transparent.
-    """
-
-    def apply(self, segments: list[Segment], background: Color) -> list[Segment]:
-        factor = self.dim_factor
-        rich_background = background.rich_color
-        result: list[Segment] = []
-        for segment in segments:
-            style = segment.style
-            color = None if style is None else style.color
-            if style is None or not style.dim or color is None or color.is_default:
-                result.append(segment)
-                continue
-            bgcolor = style.bgcolor
-            blend_background = (
-                rich_background
-                if bgcolor is None or bgcolor.is_default
-                else bgcolor
-            )
-            dimmed = (
-                style + Style.from_color(dim_color(blend_background, color, factor), None)
-            ) + NO_DIM
-            result.append(Segment(segment.text, dimmed, None))
-        return result
 
 
 class PostingDataTable(DataTable[str | Text]):
@@ -340,7 +307,7 @@ PostingDataTable {
         is_disabled = not label.checked
         if self.row_disable and is_disabled:
             strip = strip.apply_style(Style(dim=True))
-            strip = strip.apply_filter(TransparentDimFilter(), Color(0, 0, 0))
+            strip = strip.apply_filter(DimFilter(), Color(0, 0, 0))
 
         return strip
 

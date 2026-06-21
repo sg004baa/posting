@@ -24,7 +24,7 @@ class HelpModalHeader(Label):
 
     DEFAULT_CSS = """
     HelpModalHeader {
-        background: transparent;
+        background: $background-lighten-1;
         color: $text-muted;
     }
     """
@@ -35,7 +35,7 @@ class HelpModalFooter(Label):
 
     DEFAULT_CSS = """
     HelpModalFooter {
-        background: transparent;
+        background: $background-lighten-1;
         color: $text-muted;
     }
     """
@@ -48,16 +48,15 @@ class HelpModalFocusNote(Label):
 class HelpScreen(ModalScreen[None]):
     DEFAULT_CSS = """
     HelpScreen {
-        background: transparent;
         align: center middle;
         & > VerticalScroll {
-            background: transparent;
+            background: $background;
             padding: 1 2;
             width: 65%;
             height: 80%;
             border: wide $background-lighten-2;
             border-title-color: $text;
-            border-title-background: transparent;
+            border-title-background: $background;
             border-title-style: bold;
         }
 
@@ -92,7 +91,7 @@ class HelpScreen(ModalScreen[None]):
         & #bindings-title {
             width: 1fr;
             content-align: center middle;
-            background: transparent;
+            background: $background-lighten-1;
             color: $text-muted;
         }
 
