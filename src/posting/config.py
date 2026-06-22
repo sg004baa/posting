@@ -12,8 +12,6 @@ from pydantic_settings import (
 from textual.types import AnimationLevel
 
 from posting.locations import config_file, theme_directory
-from posting.types import PostingLayout
-
 
 class HeadingSettings(BaseModel):
     visible: bool = Field(default=True)
@@ -56,7 +54,7 @@ class ResponseSettings(BaseModel):
 class FocusSettings(BaseModel):
     """Configuration relating to focus."""
 
-    on_startup: Literal["url", "method", "collection"] = Field(default="url")
+    on_startup: Literal["url", "method", "collection"] = Field(default="collection")
     """On startup, move focus to the URL bar, method, collection browser, or path editor."""
 
     on_response: Literal["body", "tabs"] | None = Field(default=None)
@@ -136,9 +134,6 @@ class Settings(BaseSettings):
     load_builtin_themes: bool = Field(default=True)
     """If enabled, load builtin themes, allowing them to be specified
     in config and selected via the command palette."""
-
-    layout: PostingLayout = Field(default="vertical")
-    """Layout for the app."""
 
     use_host_environment: bool = Field(default=False)
     """If enabled, you can use environment variables from the host machine in your requests

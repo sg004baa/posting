@@ -282,30 +282,10 @@ AppHeader {
 
 AppBody {
   padding: 0 2;
+  layout: vertical;
 
-  &.layout-horizontal {
+  & KeyValueInput #key-value-inputs {
     layout: horizontal;
-
-    & KeyValueInput {
-      dock: top;
-      & #key-value-inputs {
-        layout: vertical;
-        height: 3;
-        & Button {
-          width: 100%;
-        }
-      }
-
-    }
-
-  }
-  
-  &.layout-vertical {
-    layout: vertical;
-    
-    & KeyValueInput #key-value-inputs {
-      layout: horizontal;
-    }
   }
 }
 
@@ -558,7 +538,7 @@ CollectionBrowser {
   height: 1fr;
   dock: left;
   width: auto;
-  max-width: 33%;
+  max-width: 25%;
 
   & Tree {
       color: $foreground 80%;

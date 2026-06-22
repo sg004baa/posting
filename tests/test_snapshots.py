@@ -530,7 +530,7 @@ class TestConfig:
     def test_config(self, snap_compare):
         """Check that the config is loaded correctly.
         The config loaded in this test class modifies the theme,
-        layout, focus on startup and response, and hides the header.
+        focus on startup and response, and hides the header.
 
         We should pay special attention to ensure the response body
         is focused, as it should happen automatically when the response

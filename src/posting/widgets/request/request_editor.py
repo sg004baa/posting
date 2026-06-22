@@ -6,6 +6,7 @@ from textual.app import ComposeResult
 from textual.containers import Vertical
 from textual.lazy import Lazy
 from textual.widgets import ContentSwitcher, Select, TabPane
+from textual.widgets._tabbed_content import ContentTabs
 from posting.collection import RequestBody
 from posting.widgets.request.form_editor import FormEditor
 
@@ -85,6 +86,10 @@ class RequestEditor(Vertical):
     @property
     def query_editor(self) -> QueryStringEditor:
         return self.query_one(QueryStringEditor)
+
+    @property
+    def content_tabs(self) -> ContentTabs:
+        return self.query_one(ContentTabs)
 
     def to_request_model_args(self) -> dict[str, Any]:
         """Returns a dictionary containing the arguments that should be

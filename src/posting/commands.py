@@ -83,26 +83,6 @@ class PostingProvider(Provider):
         from posting.app import MainScreen
 
         if isinstance(screen, MainScreen):
-            # Only show the option to change to the layout which isn't the current one.
-            if screen.current_layout == "horizontal":
-                commands_to_show.append(
-                    (
-                        "layout: Vertical",
-                        partial(app.command_layout, "vertical"),
-                        "Change layout to vertical",
-                        True,
-                    ),
-                )
-            elif screen.current_layout == "vertical":
-                commands_to_show.append(
-                    (
-                        "layout: Horizontal",
-                        partial(app.command_layout, "horizontal"),
-                        "Change layout to horizontal",
-                        True,
-                    ),
-                )
-
             if screen.url_bar.url_input.value.strip() != "":
                 commands_to_show.append(
                     (

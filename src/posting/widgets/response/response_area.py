@@ -3,6 +3,7 @@ import httpx
 from textual.lazy import Lazy
 from posting.config import SETTINGS
 
+from posting.widgets.response.sent_request import SentRequest
 from posting.widgets.response.response_trace import ResponseTrace
 from posting.widgets.response.script_output import ScriptOutput
 from posting.widgets.tabbed_content import PostingTabbedContent
@@ -55,6 +56,8 @@ class ResponseArea(Vertical):
                 yield Lazy(ScriptOutput())
             with TabPane("Trace", id="response-trace-pane"):
                 yield Lazy(ResponseTrace())
+            with TabPane("Sent Request", id="response-sent-request-pane"):
+                yield Lazy(SentRequest())
 
     def on_theme_change(self, _) -> None:
         if self._latest_response:
@@ -111,6 +114,7 @@ class ResponseArea(Vertical):
             self.add_class("error")
 
         self.border_title = self._make_border_title(response)
+        self.sent_request.update_request(response.request)
 
         settings = SETTINGS.get()
         if settings.response.show_size_and_time:
@@ -131,6 +135,10 @@ class ResponseArea(Vertical):
     @property
     def cookies_section(self) -> CookiesSection:
         return self.query_one(CookiesSection)
+
+    @property
+    def sent_request(self) -> SentRequest:
+        return self.query_one(SentRequest)
 
     @property
     def tabbed_content(self) -> ResponseTabbedContent:
