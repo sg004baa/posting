@@ -13,6 +13,7 @@ colour survives as ``ansi_default``.
 
 from rich.color import Color as RichColor, ColorType
 from textual.color import Color
+from textual.widgets._toggle_button import ToggleButton
 
 _ANSI_DEFAULT = Color(0, 0, 0, ansi=-1)
 
@@ -29,3 +30,10 @@ def apply() -> None:
     """Install the colour-preserving patch (idempotent)."""
     if Color.from_rich_color.__func__ is not _from_rich_color:
         Color.from_rich_color = classmethod(_from_rich_color)
+
+    # Toggle buttons (checkboxes) draw pill caps using the button background
+    # as the caps' *foreground* colour. With transparent backgrounds that
+    # resolves to the terminal's default foreground, which paints light
+    # half-blocks either side of the X, so drop the caps entirely.
+    ToggleButton.BUTTON_LEFT = ""
+    ToggleButton.BUTTON_RIGHT = ""
