@@ -52,7 +52,7 @@
 .terminal-r18 { fill: #ffffff;font-weight: bold }
 .terminal-r19 { fill: #7f7f7f }
 .terminal-r20 { fill: #00ffff;font-weight: bold }
-.terminal-r21 { fill: #292929 }
+.terminal-r21 { fill: #000000;font-weight: bold }
 .terminal-r22 { fill: #6c6c6c }
 .terminal-r23 { fill: #868887 }
 .terminal-r24 { fill: #3e2a47 }
@@ -171,7 +171,7 @@
             </g>
         
     <g transform="translate(9, 41)" clip-path="url(#terminal-clip-terminal)">
-    <rect fill="#98a84b" x="512.4" y="99.1" width="231.8" height="24.65" shape-rendering="crispEdges"/><rect fill="#00ff00" x="829.6" y="99.1" width="97.6" height="24.65" shape-rendering="crispEdges"/><rect fill="#ff0000" x="939.4" y="99.1" width="48.8" height="24.65" shape-rendering="crispEdges"/><rect fill="#dddddd" x="463.6" y="196.7" width="48.8" height="24.65" shape-rendering="crispEdges"/>
+    <rect fill="#98a84b" x="512.4" y="99.1" width="231.8" height="24.65" shape-rendering="crispEdges"/><rect fill="#00ff00" x="829.6" y="99.1" width="97.6" height="24.65" shape-rendering="crispEdges"/><rect fill="#ff0000" x="939.4" y="99.1" width="48.8" height="24.65" shape-rendering="crispEdges"/><rect fill="#2ecc71" x="451.4" y="196.7" width="12.2" height="24.65" shape-rendering="crispEdges"/><rect fill="#2ecc71" x="463.6" y="196.7" width="48.8" height="24.65" shape-rendering="crispEdges"/><rect fill="#2ecc71" x="512.4" y="196.7" width="12.2" height="24.65" shape-rendering="crispEdges"/>
     <g class="terminal-matrix">
     <text class="terminal-r1" x="1220" y="20" textLength="12.2" clip-path="url(#terminal-line-0)">
 </text><text class="terminal-r2" x="36.6" y="44.4" textLength="85.4" clip-path="url(#terminal-line-1)">Posting</text><text class="terminal-r1" x="1220" y="44.4" textLength="12.2" clip-path="url(#terminal-line-1)">

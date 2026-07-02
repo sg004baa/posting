@@ -57,7 +57,7 @@
 .terminal-r23 { fill: #56fbbc }
 .terminal-r24 { fill: #ff8456 }
 .terminal-r25 { fill: #ffe456 }
-.terminal-r26 { fill: #292929 }
+.terminal-r26 { fill: #c5c8c6;text-decoration: underline; }
 .terminal-r27 { fill: #9268a9 }
 .terminal-r28 { fill: #6c6c6c }
 .terminal-r29 { fill: #868887 }
@@ -261,7 +261,7 @@
             </g>
         
     <g transform="translate(9, 41)" clip-path="url(#terminal-clip-terminal)">
-    <rect fill="#c5c8c6" x="305" y="733.5" width="12.2" height="24.65" shape-rendering="crispEdges"/>
+    
     <g class="terminal-matrix">
     <text class="terminal-r1" x="976" y="20" textLength="12.2" clip-path="url(#terminal-line-0)">
 </text><text class="terminal-r2" x="36.6" y="44.4" textLength="85.4" clip-path="url(#terminal-line-1)">Posting</text><text class="terminal-r1" x="976" y="44.4" textLength="12.2" clip-path="url(#terminal-line-1)">

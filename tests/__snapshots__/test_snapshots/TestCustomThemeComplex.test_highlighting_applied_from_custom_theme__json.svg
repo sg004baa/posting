@@ -59,7 +59,7 @@
 .terminal-r25 { fill: #4b4e55 }
 .terminal-r26 { fill: #292929 }
 .terminal-r27 { fill: #f59e0b }
-.terminal-r28 { fill: #292929;font-style: italic; }
+.terminal-r28 { fill: #ffffff;font-style: italic;;text-decoration: underline; }
 .terminal-r29 { fill: #ffffff;font-style: italic; }
 .terminal-r30 { fill: #8e44ad;font-style: italic; }
 .terminal-r31 { fill: #27ae60;font-style: italic; }
@@ -186,7 +186,7 @@
             </g>
         
     <g transform="translate(9, 41)" clip-path="url(#terminal-clip-terminal)">
-    <rect fill="#98729f" x="512.4" y="99.1" width="61" height="24.65" shape-rendering="crispEdges"/><rect fill="#98a84b" x="610" y="99.1" width="341.6" height="24.65" shape-rendering="crispEdges"/><rect fill="#cc555a" x="341.6" y="269.9" width="36.6" height="24.65" shape-rendering="crispEdges"/><rect fill="#3498db" x="378.2" y="269.9" width="12.2" height="24.65" shape-rendering="crispEdges"/><rect fill="#176638" x="1159" y="269.9" width="12.2" height="24.65" shape-rendering="crispEdges"/><rect fill="#608ab1" x="341.6" y="294.3" width="36.6" height="24.65" shape-rendering="crispEdges"/><rect fill="#ffffff" x="378.2" y="294.3" width="12.2" height="24.65" shape-rendering="crispEdges"/><rect fill="#176638" x="1159" y="294.3" width="12.2" height="24.65" shape-rendering="crispEdges"/><rect fill="#cc555a" x="341.6" y="318.7" width="36.6" height="24.65" shape-rendering="crispEdges"/><rect fill="#176638" x="1159" y="318.7" width="12.2" height="24.65" shape-rendering="crispEdges"/><rect fill="#cc555a" x="341.6" y="343.1" width="36.6" height="24.65" shape-rendering="crispEdges"/><rect fill="#176638" x="1159" y="343.1" width="12.2" height="24.65" shape-rendering="crispEdges"/>
+    <rect fill="#98729f" x="512.4" y="99.1" width="61" height="24.65" shape-rendering="crispEdges"/><rect fill="#98a84b" x="610" y="99.1" width="341.6" height="24.65" shape-rendering="crispEdges"/><rect fill="#cc555a" x="341.6" y="269.9" width="36.6" height="24.65" shape-rendering="crispEdges"/><rect fill="#3498db" x="378.2" y="269.9" width="12.2" height="24.65" shape-rendering="crispEdges"/><rect fill="#176638" x="1159" y="269.9" width="12.2" height="24.65" shape-rendering="crispEdges"/><rect fill="#608ab1" x="341.6" y="294.3" width="36.6" height="24.65" shape-rendering="crispEdges"/><rect fill="#176638" x="1159" y="294.3" width="12.2" height="24.65" shape-rendering="crispEdges"/><rect fill="#cc555a" x="341.6" y="318.7" width="36.6" height="24.65" shape-rendering="crispEdges"/><rect fill="#176638" x="1159" y="318.7" width="12.2" height="24.65" shape-rendering="crispEdges"/><rect fill="#cc555a" x="341.6" y="343.1" width="36.6" height="24.65" shape-rendering="crispEdges"/><rect fill="#176638" x="1159" y="343.1" width="12.2" height="24.65" shape-rendering="crispEdges"/>
     <g class="terminal-matrix">
     <text class="terminal-r1" x="1220" y="20" textLength="12.2" clip-path="url(#terminal-line-0)">
 </text><text class="terminal-r2" x="36.6" y="44.4" textLength="85.4" clip-path="url(#terminal-line-1)">Posting</text><text class="terminal-r1" x="1220" y="44.4" textLength="12.2" clip-path="url(#terminal-line-1)">

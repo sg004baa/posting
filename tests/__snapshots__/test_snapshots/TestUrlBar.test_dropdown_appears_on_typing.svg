@@ -37,7 +37,7 @@
 .terminal-r3 { fill: #ff69b4 }
 .terminal-r4 { fill: #ffffff;font-weight: bold }
 .terminal-r5 { fill: #662a48 }
-.terminal-r6 { fill: #292929;font-weight: bold }
+.terminal-r6 { fill: #000000;font-weight: bold }
 .terminal-r7 { fill: #ffffff }
 .terminal-r8 { fill: #292929 }
 .terminal-r9 { fill: #d892ff;text-decoration: underline; }
@@ -150,7 +150,7 @@
             </g>
         
     <g transform="translate(9, 41)" clip-path="url(#terminal-clip-terminal)">
-    <rect fill="#dddddd" x="36.6" y="99.1" width="109.8" height="24.65" shape-rendering="crispEdges"/><rect fill="#622d7f" x="231.8" y="99.1" width="12.2" height="24.65" shape-rendering="crispEdges"/><rect fill="#622d7f" x="231.8" y="123.5" width="12.2" height="24.65" shape-rendering="crispEdges"/><rect fill="#622d7f" x="231.8" y="147.9" width="12.2" height="24.65" shape-rendering="crispEdges"/><rect fill="#622d7f" x="231.8" y="172.3" width="12.2" height="24.65" shape-rendering="crispEdges"/><rect fill="#622d7f" x="231.8" y="196.7" width="12.2" height="24.65" shape-rendering="crispEdges"/><rect fill="#622d7f" x="231.8" y="221.1" width="12.2" height="24.65" shape-rendering="crispEdges"/>
+    <rect fill="#c45aff" x="36.6" y="99.1" width="109.8" height="24.65" shape-rendering="crispEdges"/><rect fill="#622d7f" x="231.8" y="99.1" width="12.2" height="24.65" shape-rendering="crispEdges"/><rect fill="#622d7f" x="231.8" y="123.5" width="12.2" height="24.65" shape-rendering="crispEdges"/><rect fill="#622d7f" x="231.8" y="147.9" width="12.2" height="24.65" shape-rendering="crispEdges"/><rect fill="#622d7f" x="231.8" y="172.3" width="12.2" height="24.65" shape-rendering="crispEdges"/><rect fill="#622d7f" x="231.8" y="196.7" width="12.2" height="24.65" shape-rendering="crispEdges"/><rect fill="#622d7f" x="231.8" y="221.1" width="12.2" height="24.65" shape-rendering="crispEdges"/>
     <g class="terminal-matrix">
     <text class="terminal-r1" x="976" y="20" textLength="12.2" clip-path="url(#terminal-line-0)">
 </text><text class="terminal-r2" x="36.6" y="44.4" textLength="85.4" clip-path="url(#terminal-line-1)">Posting</text><text class="terminal-r1" x="976" y="44.4" textLength="12.2" clip-path="url(#terminal-line-1)">

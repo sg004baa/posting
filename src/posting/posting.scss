@@ -790,9 +790,9 @@ TextAreaFooter {
       }
       &:focus {
         border: round $accent;
-        background: $block-cursor-background;
+        background: transparent;
         & .toggle--button {
-          background: $block-cursor-background;
+          background: transparent;
         }
       }
   }

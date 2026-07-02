@@ -39,8 +39,8 @@
 .terminal-r5 { fill: #ff69b4 }
 .terminal-r6 { fill: #cccccc }
 .terminal-r7 { fill: #292929 }
-.terminal-r8 { fill: #dddddd;text-decoration: underline; }
-.terminal-r9 { fill: #dddddd }
+.terminal-r8 { fill: #000000;text-decoration: underline; }
+.terminal-r9 { fill: #000000 }
 .terminal-r10 { fill: #606060 }
 .terminal-r11 { fill: #ff9ccd;font-weight: bold }
 .terminal-r12 { fill: #d892ff }
@@ -147,7 +147,7 @@
             </g>
         
     <g transform="translate(9, 41)" clip-path="url(#terminal-clip-terminal)">
-    <rect fill="#130919" x="231.8" y="99.1" width="12.2" height="24.65" shape-rendering="crispEdges"/><rect fill="#130919" x="231.8" y="123.5" width="12.2" height="24.65" shape-rendering="crispEdges"/><rect fill="#130919" x="231.8" y="147.9" width="12.2" height="24.65" shape-rendering="crispEdges"/><rect fill="#130919" x="231.8" y="172.3" width="12.2" height="24.65" shape-rendering="crispEdges"/><rect fill="#130919" x="231.8" y="196.7" width="12.2" height="24.65" shape-rendering="crispEdges"/><rect fill="#130919" x="231.8" y="221.1" width="12.2" height="24.65" shape-rendering="crispEdges"/>
+    <rect fill="#130919" x="231.8" y="99.1" width="12.2" height="24.65" shape-rendering="crispEdges"/><rect fill="#c662ff" x="305" y="99.1" width="12.2" height="24.65" shape-rendering="crispEdges"/><rect fill="#c662ff" x="317.2" y="99.1" width="12.2" height="24.65" shape-rendering="crispEdges"/><rect fill="#c662ff" x="329.4" y="99.1" width="36.6" height="24.65" shape-rendering="crispEdges"/><rect fill="#c662ff" x="366" y="99.1" width="24.4" height="24.65" shape-rendering="crispEdges"/><rect fill="#c662ff" x="390.4" y="99.1" width="12.2" height="24.65" shape-rendering="crispEdges"/><rect fill="#c662ff" x="402.6" y="99.1" width="12.2" height="24.65" shape-rendering="crispEdges"/><rect fill="#130919" x="231.8" y="123.5" width="12.2" height="24.65" shape-rendering="crispEdges"/><rect fill="#130919" x="231.8" y="147.9" width="12.2" height="24.65" shape-rendering="crispEdges"/><rect fill="#130919" x="231.8" y="172.3" width="12.2" height="24.65" shape-rendering="crispEdges"/><rect fill="#130919" x="231.8" y="196.7" width="12.2" height="24.65" shape-rendering="crispEdges"/><rect fill="#130919" x="231.8" y="221.1" width="12.2" height="24.65" shape-rendering="crispEdges"/>
     <g class="terminal-matrix">
     <text class="terminal-r1" x="976" y="20" textLength="12.2" clip-path="url(#terminal-line-0)">
 </text><text class="terminal-r2" x="36.6" y="44.4" textLength="85.4" clip-path="url(#terminal-line-1)">Posting</text><text class="terminal-r1" x="976" y="44.4" textLength="12.2" clip-path="url(#terminal-line-1)">

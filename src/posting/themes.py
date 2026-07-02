@@ -16,14 +16,13 @@ ANSI_DEFAULT = "ansi_default"
 """Colour which resolves to the terminal's own default foreground/background."""
 
 TERMINAL_BACKGROUND_VARIABLES: dict[str, str] = {
-    # Cursors indicate their position with text styles rather than a
-    # painted background colour.
-    "block-cursor-background": "transparent",
-    "block-cursor-text-style": "reverse",
+    # The text cursor is a bar (underline) rather than a block.
+    "input-cursor-background": "transparent",
+    "input-cursor-text-style": "underline",
+    "text-area-cursor": "underline",
+    "block-cursor-text-style": "bold",
     "block-cursor-blurred-background": "transparent",
     "block-hover-background": "transparent",
-    "input-cursor-background": "transparent",
-    "input-cursor-text-style": "reverse",
     # Chrome which would otherwise be painted with theme colours.
     "footer-background": "transparent",
     "footer-item-background": "transparent",
@@ -48,6 +47,14 @@ def use_terminal_background(theme: TextualTheme) -> TextualTheme:
     """
     variables = dict(theme.variables or {})
     variables.update(TERMINAL_BACKGROUND_VARIABLES)
+
+    # The block cursor (focused list/table/tab items) keeps a painted
+    # primary-coloured highlight with a guaranteed-contrast text colour,
+    # so it stands out clearly against the bare terminal background.
+    primary = Color.parse(theme.primary)
+    variables["block-cursor-background"] = primary.hex
+    variables["block-cursor-foreground"] = primary.get_contrast_text(1.0).hex
+
     return replace(
         theme,
         background=ANSI_DEFAULT,
