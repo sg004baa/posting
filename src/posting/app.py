@@ -12,6 +12,10 @@ from rich.text import Text
 from textual.content import Content
 from textual.filter import ANSIToTruecolor
 
+from posting import _transparency
+
+_transparency.apply()
+
 from posting.importing.curl import CurlImport
 from textual import messages, on, log, work
 from textual.command import CommandPalette
