@@ -53,7 +53,59 @@ Posting {
       padding: 0;
       & #main-row {
         height: 1;
+      }
+      & #method-selector {
+        height: 1;
         border: none;
+      }
+      & #url-input {
+        height: 1;
+        border: none;
+        &:focus {
+          border: none;
+        }
+      }
+      & #response-status-code {
+        margin: 0;
+      }
+      & #trace-markers {
+        margin: 0;
+      }
+    }
+
+    & SendRequestButton {
+      height: 1;
+      border: none;
+      &:hover {
+        border: none;
+      }
+      &:focus {
+        border: none;
+      }
+    }
+
+    & TextAreaFooter {
+      height: 1;
+      & Select {
+        width: 8;
+        height: 1;
+        border: none;
+      }
+      & Checkbox {
+        height: 1;
+        border: none;
+        &:focus {
+          border: none;
+        }
+      }
+      #location-label {
+        margin: 0 0 0 1;
+      }
+      #mode-label {
+        margin: 0 0 0 1;
+      }
+      #rw-label {
+        margin: 0 0 0 1;
       }
     }
 
@@ -107,22 +159,35 @@ Posting {
     }
 
     & KeyValueInput {
+      #key-value-inputs {
+        height: 1;
+      }
       & Input {
+        height: 1;
         margin: 0;
+        border: none;
         border-left: vkey $surface-darken-1;
         padding: 0;
         &:focus {
           padding: 0;
+          border: none;
           border-left: vkey $surface-darken-1;
         }
       }
       & Button {
+        height: 1;
         margin: 0;
+        border: none;
         border-left: vkey $surface-darken-1;
         border-right: none;
         &:hover {
+          border: none;
           border-left: vkey $surface-darken-1;
           border-right: none;
+        }
+        &:focus {
+          border: none;
+          border-left: vkey $surface-darken-1;
         }
       }
     }
@@ -410,15 +475,15 @@ UrlBar {
 
   & #main-row {
     height: 3;
-    border: round $accent 40%;
-    &:focus-within {
-      border: round $accent;
-    }
   }
 
   & #method-selector {
       width: 11;
-      height: 1;
+      height: 3;
+      border: round $accent 40%;
+      &:focus {
+        border: round $accent;
+      }
       &:blur SelectCurrent {
         background: $primary-muted;
         #label {
@@ -427,9 +492,23 @@ UrlBar {
       }
   }
 
+  & #url-input {
+      height: 3;
+      border: round $accent 40%;
+      padding: 0 1;
+      &:focus {
+        border: round $accent;
+        padding: 0 1;
+      }
+      &.-invalid {
+        border: round $error;
+      }
+  }
+
   & #response-status-code {
     width: 5;
     height: 1;
+    margin: 1 0;
     padding: 0 1;
     display: none;
     &.-success {
@@ -447,6 +526,7 @@ UrlBar {
   }
 
   & #trace-markers {
+      margin: 1 0;
       padding: 0 1;
       display: none;
       background: $surface;
@@ -480,13 +560,18 @@ UrlBar {
   }
 }
 
-SendRequestButton {
+UrlBar SendRequestButton {
   min-width: 8;
+  height: 3;
+  border: round $accent 40%;
   background: transparent;
   color: $text-accent;
   text-style: b;
   &:hover {
-    text-style: b u;
+    border: round $accent;
+  }
+  &:focus {
+    border: round $accent;
   }
 }
 
@@ -503,7 +588,7 @@ KeyValueEditor {
       color: $text-accent;
     }
     #key-value-inputs {
-      height: 1;
+      height: 3;
     }
     #row-writer-footer {
       height: auto;
@@ -523,27 +608,36 @@ KeyValueEditor {
         }
     }
     & Input {
-        border: none;
+        height: 3;
+        border: round $accent 40%;
         width: 1fr;
         margin: 0 1;
         padding: 0 1;
         &:focus {
-          border: none;
+          border: round $accent;
           padding: 0 1;
         }
+        &.-invalid {
+          border: round $error;
+        }
     }
-  
+
     & Button {
         background: transparent;
         color: $text-primary;
         text-style: none;
         min-width: 0;
         width: auto;
+        height: 3;
+        border: round $accent 40%;
         margin: 0 1;
         &:hover {
             text-style: b;
-            border: none;
+            border: round $accent;
             background: transparent;
+        }
+        &:focus {
+            border: round $accent;
         }
     }
   }
@@ -659,12 +753,8 @@ ResponseTextArea {
 
 TextAreaFooter {
   dock: bottom;
-  height: 1;
+  height: 3;
   width: 1fr;
-
-  &:focus-within {
-      background: $primary-muted;
-  }
 
   &:disabled {
       background: transparent;
@@ -672,9 +762,14 @@ TextAreaFooter {
   }
 
   & Select {
-      width: 8;
+      width: 10;
+      height: 3;
       margin-left: 1;
-      
+      border: round $accent 40%;
+      &:focus {
+        border: round $accent;
+      }
+
       & SelectCurrent {
         width: 8;
         background: $surface;
@@ -687,13 +782,14 @@ TextAreaFooter {
 
   & Checkbox {
       margin: 0 1;
-      height: 1;
+      height: 3;
       padding: 0 1;
-      border: none;
+      border: round $accent 40%;
       & .toggle--button {
         background: transparent;
       }
       &:focus {
+        border: round $accent;
         background: $block-cursor-background;
         & .toggle--button {
           background: $block-cursor-background;
@@ -704,14 +800,14 @@ TextAreaFooter {
   #location-label {
       width: auto;
       color: $text 50%;
-      margin-left: 1;
+      margin: 1 0 1 1;
   }
 
   #mode-label {
       dock: left;
       padding: 0 1;
       display: none;
-      margin-left: 1;
+      margin: 1 0 1 1;
       &.visual-mode {
         color: $text-accent;
         background: $accent-muted;
@@ -720,7 +816,7 @@ TextAreaFooter {
   }
 
   #rw-label {
-      margin-left: 1;
+      margin: 1 0 1 1;
       color: $text-warning;
       background: $warning-muted;
       padding: 0 1;
