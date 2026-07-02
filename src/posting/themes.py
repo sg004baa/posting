@@ -1,3 +1,4 @@
+from dataclasses import replace
 from pathlib import Path
 from typing import NamedTuple
 import uuid
@@ -9,6 +10,59 @@ from textual.theme import Theme as TextualTheme
 from textual.widgets.text_area import TextAreaTheme
 import yaml
 from posting.config import SETTINGS
+
+
+ANSI_DEFAULT = "ansi_default"
+"""Colour which resolves to the terminal's own default foreground/background."""
+
+TERMINAL_BACKGROUND_VARIABLES: dict[str, str] = {
+    # The text cursor is a bar (underline) rather than a block.
+    "input-cursor-background": "transparent",
+    "input-cursor-text-style": "underline",
+    "text-area-cursor": "underline",
+    "block-cursor-text-style": "bold",
+    "block-cursor-blurred-background": "transparent",
+    "block-hover-background": "transparent",
+    # Chrome which would otherwise be painted with theme colours.
+    "footer-background": "transparent",
+    "footer-item-background": "transparent",
+    "footer-key-background": "transparent",
+    "footer-description-background": "transparent",
+    "scrollbar-background": "transparent",
+    "scrollbar-background-hover": "transparent",
+    "scrollbar-background-active": "transparent",
+    "scrollbar-corner-color": "transparent",
+    "surface-active": "transparent",
+    "link-background": "transparent",
+    "link-background-hover": "transparent",
+}
+
+
+def use_terminal_background(theme: TextualTheme) -> TextualTheme:
+    """Return a copy of the theme which paints no background colours at all.
+
+    Every background-ish colour (background, surface, panel, boost and the
+    variables derived from them) is replaced with the terminal's default
+    background, so Posting renders on the bare terminal.
+    """
+    variables = dict(theme.variables or {})
+    variables.update(TERMINAL_BACKGROUND_VARIABLES)
+
+    # The block cursor (focused list/table/tab items) keeps a painted
+    # primary-coloured highlight with a guaranteed-contrast text colour,
+    # so it stands out clearly against the bare terminal background.
+    primary = Color.parse(theme.primary)
+    variables["block-cursor-background"] = primary.hex
+    variables["block-cursor-foreground"] = primary.get_contrast_text(1.0).hex
+
+    return replace(
+        theme,
+        background=ANSI_DEFAULT,
+        surface=ANSI_DEFAULT,
+        panel=ANSI_DEFAULT,
+        boost=ANSI_DEFAULT,
+        variables=variables,
+    )
 
 
 class PostingTextAreaTheme(BaseModel):
@@ -239,7 +293,7 @@ class Theme(BaseModel):
         theme_data["variables"] = {k: v for k, v in variables.items() if v is not None}
 
         textual_theme = TextualTheme(**theme_data)
-        return textual_theme
+        return use_terminal_background(textual_theme)
 
     @staticmethod
     def text_area_theme_from_theme_variables(
@@ -584,4 +638,10 @@ BUILTIN_THEMES: dict[str, TextualTheme] = {
             "method-head": "#C77DFF",
         },
     ),
+}
+
+# All built-in themes render on the terminal's own background rather than
+# painting their own.
+BUILTIN_THEMES = {
+    name: use_terminal_background(theme) for name, theme in BUILTIN_THEMES.items()
 }

@@ -1,5 +1,3 @@
-$empty-hatch: right $surface-lighten-1 70%;
-
 * {
   scrollbar-color: $primary 10%;
   scrollbar-color-hover: $primary 80%;
@@ -14,6 +12,35 @@ $empty-hatch: right $surface-lighten-1 70%;
   }
 }
 
+/* Opacity blends towards an RGB approximation of the terminal background,
+which paints black boxes on a transparent UI. Indicate disabled state with
+the terminal-native `dim` style instead. */
+*:disabled {
+  opacity: 100% !important;
+  text-opacity: 100% !important;
+  text-style: dim;
+}
+
+Tab:disabled {
+  color: $text-muted;
+}
+
+/* The underline bar under tabs paints `$foreground 10%` by default, which
+flattens to a dark strip on a transparent background. */
+Underline {
+  & > .underline--bar {
+    color: $accent 50%;
+    background: transparent;
+  }
+}
+
+Tabs:focus {
+  & .underline--bar {
+    color: $accent;
+    background: transparent;
+  }
+}
+
 Posting {
   &.-compact {
     & AppHeader {
@@ -24,6 +51,62 @@ Posting {
     }
     & UrlBar {
       padding: 0;
+      & #main-row {
+        height: 1;
+      }
+      & #method-selector {
+        height: 1;
+        border: none;
+      }
+      & #url-input {
+        height: 1;
+        border: none;
+        &:focus {
+          border: none;
+        }
+      }
+      & #response-status-code {
+        margin: 0;
+      }
+      & #trace-markers {
+        margin: 0;
+      }
+    }
+
+    & SendRequestButton {
+      height: 1;
+      border: none;
+      &:hover {
+        border: none;
+      }
+      &:focus {
+        border: none;
+      }
+    }
+
+    & TextAreaFooter {
+      height: 1;
+      & Select {
+        width: 8;
+        height: 1;
+        border: none;
+      }
+      & Checkbox {
+        height: 1;
+        border: none;
+        &:focus {
+          border: none;
+        }
+      }
+      #location-label {
+        margin: 0 0 0 1;
+      }
+      #mode-label {
+        margin: 0 0 0 1;
+      }
+      #rw-label {
+        margin: 0 0 0 1;
+      }
     }
 
     & Footer {
@@ -76,22 +159,35 @@ Posting {
     }
 
     & KeyValueInput {
+      #key-value-inputs {
+        height: 1;
+      }
       & Input {
+        height: 1;
         margin: 0;
+        border: none;
         border-left: vkey $surface-darken-1;
         padding: 0;
         &:focus {
           padding: 0;
+          border: none;
           border-left: vkey $surface-darken-1;
         }
       }
       & Button {
+        height: 1;
         margin: 0;
+        border: none;
         border-left: vkey $surface-darken-1;
         border-right: none;
         &:hover {
+          border: none;
           border-left: vkey $surface-darken-1;
           border-right: none;
+        }
+        &:focus {
+          border: none;
+          border-left: vkey $surface-darken-1;
         }
       }
     }
@@ -151,7 +247,7 @@ Posting {
     }
 
     & #theme-search-command-palette {
-      background: black 15%;
+      background: transparent;
       & > Vertical {
         height: auto;
         & CommandList {
@@ -214,7 +310,7 @@ Screen {
 }
 
 ModalScreen {
-  background: black 30%;
+  background: transparent;
 }
 
 Footer {
@@ -336,7 +432,6 @@ PostingDataTable {
       display: block;
     }
     #empty-message {
-      hatch: $empty-hatch;
       color: $text-muted;
       display: none;
     }
@@ -379,12 +474,16 @@ UrlBar {
   padding: 0 3 0 3;
 
   & #main-row {
-    height: 1;
+    height: 3;
   }
 
   & #method-selector {
       width: 11;
-      height: 1;
+      height: 3;
+      border: round $accent 40%;
+      &:focus {
+        border: round $accent;
+      }
       &:blur SelectCurrent {
         background: $primary-muted;
         #label {
@@ -393,9 +492,23 @@ UrlBar {
       }
   }
 
+  & #url-input {
+      height: 3;
+      border: round $accent 40%;
+      padding: 0 1;
+      &:focus {
+        border: round $accent;
+        padding: 0 1;
+      }
+      &.-invalid {
+        border: round $error;
+      }
+  }
+
   & #response-status-code {
     width: 5;
     height: 1;
+    margin: 1 0;
     padding: 0 1;
     display: none;
     &.-success {
@@ -413,6 +526,7 @@ UrlBar {
   }
 
   & #trace-markers {
+      margin: 1 0;
       padding: 0 1;
       display: none;
       background: $surface;
@@ -446,13 +560,18 @@ UrlBar {
   }
 }
 
-SendRequestButton {
+UrlBar SendRequestButton {
   min-width: 8;
-  background: $accent-muted;
+  height: 3;
+  border: round $accent 40%;
+  background: transparent;
   color: $text-accent;
   text-style: b;
   &:hover {
-    background-tint: $text-accent 10%;
+    border: round $accent;
+  }
+  &:focus {
+    border: round $accent;
   }
 }
 
@@ -469,47 +588,56 @@ KeyValueEditor {
       color: $text-accent;
     }
     #key-value-inputs {
-      height: 1;
+      height: 3;
     }
     #row-writer-footer {
       height: auto;
     }
     &.edit-mode {
-        background: $accent-muted;
+        background: transparent;
         #editing-row-label {
           display: block;
         }
         #add-button {
-            color: $text;
-            background: $accent;
+            color: $text-accent;
+            background: transparent;
         }
         Input {
           color: $text;
-          background: $accent 10%;
+          background: transparent;
         }
     }
     & Input {
-        border: none;
+        height: 3;
+        border: round $accent 40%;
         width: 1fr;
         margin: 0 1;
         padding: 0 1;
         &:focus {
-          border: none;
+          border: round $accent;
           padding: 0 1;
         }
+        &.-invalid {
+          border: round $error;
+        }
     }
-  
+
     & Button {
-        background: $primary;
-        color: $text;
+        background: transparent;
+        color: $text-primary;
         text-style: none;
         min-width: 0;
         width: auto;
+        height: 3;
+        border: round $accent 40%;
         margin: 0 1;
         &:hover {
             text-style: b;
-            border: none;
-            background: $primary-darken-1;
+            border: round $accent;
+            background: transparent;
+        }
+        &:focus {
+            border: round $accent;
         }
     }
   }
@@ -528,7 +656,6 @@ KeyValueEditor {
       }
       & #empty-message {
           color: $text-muted;
-          hatch: right $surface-lighten-1 70%;
           display: block;
       }
   }
@@ -612,7 +739,6 @@ RequestEditor {
   }
   & #no-body-label {
       height: 1fr;
-      hatch: $empty-hatch;
       color: $text-muted;
   }
 }
@@ -627,21 +753,23 @@ ResponseTextArea {
 
 TextAreaFooter {
   dock: bottom;
-  height: 1;
+  height: 3;
   width: 1fr;
-
-  &:focus-within {
-      background: $primary-muted;
-  }
 
   &:disabled {
       background: transparent;
+      text-style: dim;
   }
 
   & Select {
-      width: 8;
+      width: 10;
+      height: 3;
       margin-left: 1;
-      
+      border: round $accent 40%;
+      &:focus {
+        border: round $accent;
+      }
+
       & SelectCurrent {
         width: 8;
         background: $surface;
@@ -654,16 +782,17 @@ TextAreaFooter {
 
   & Checkbox {
       margin: 0 1;
-      height: 1;
+      height: 3;
       padding: 0 1;
-      border: none;
+      border: round $accent 40%;
       & .toggle--button {
         background: transparent;
       }
       &:focus {
-        background: $block-cursor-background;
+        border: round $accent;
+        background: transparent;
         & .toggle--button {
-          background: $block-cursor-background;
+          background: transparent;
         }
       }
   }
@@ -671,14 +800,14 @@ TextAreaFooter {
   #location-label {
       width: auto;
       color: $text 50%;
-      margin-left: 1;
+      margin: 1 0 1 1;
   }
 
   #mode-label {
       dock: left;
       padding: 0 1;
       display: none;
-      margin-left: 1;
+      margin: 1 0 1 1;
       &.visual-mode {
         color: $text-accent;
         background: $accent-muted;
@@ -687,13 +816,13 @@ TextAreaFooter {
   }
 
   #rw-label {
-      margin-left: 1;
+      margin: 1 0 1 1;
       color: $text-warning;
       background: $warning-muted;
       padding: 0 1;
       display: none;
       &:disabled {
-        opacity: 30%;
+        text-style: dim;
       }
       &.read-only {
          display: block;
@@ -726,12 +855,12 @@ Button {
   border: none;
 
   &:disabled {
-    opacity: 40%;
+    text-style: dim;
   }
 }
 
 CommandPalette {
-  background: black 33%;
+  background: transparent;
   
   & > Vertical {
     margin-top: 2;
@@ -816,8 +945,7 @@ Select {
   width: 1fr;
   background: $accent-muted;
   color: $text-accent;
-  hatch: right $accent 30%;
-  
+
   & Label {
     width: auto;
     padding: 0 1;

@@ -18,8 +18,8 @@ name: example  # use this name in your config file
 primary: '#4e78c4'  # buttons, fixed table columns
 secondary: '#f39c12'  # method selector, some minor labels
 accent: '#e74c3c'  # header text, scrollbars, cursors, focus highlights
-background: '#0e1726' # background colors
-surface: '#17202a'  # panels, etc
+background: '#0e1726' # ignored: Posting always uses the terminal's own background
+surface: '#17202a'  # ignored: Posting always uses the terminal's own background
 error: '#e74c3c'  # error messages
 success: '#2ecc71'  # success messages
 warning: '#f1c40f'  # warning messages
