@@ -151,7 +151,7 @@ Posting {
     }
 
     & #theme-search-command-palette {
-      background: black 15%;
+      background: transparent;
       & > Vertical {
         height: auto;
         & CommandList {
@@ -214,7 +214,7 @@ Screen {
 }
 
 ModalScreen {
-  background: black 30%;
+  background: transparent;
 }
 
 Footer {
@@ -448,11 +448,11 @@ UrlBar {
 
 SendRequestButton {
   min-width: 8;
-  background: $accent-muted;
+  background: transparent;
   color: $text-accent;
   text-style: b;
   &:hover {
-    background-tint: $text-accent 10%;
+    text-style: b u;
   }
 }
 
@@ -475,17 +475,17 @@ KeyValueEditor {
       height: auto;
     }
     &.edit-mode {
-        background: $accent-muted;
+        background: transparent;
         #editing-row-label {
           display: block;
         }
         #add-button {
-            color: $text;
-            background: $accent;
+            color: $text-accent;
+            background: transparent;
         }
         Input {
           color: $text;
-          background: $accent 10%;
+          background: transparent;
         }
     }
     & Input {
@@ -500,8 +500,8 @@ KeyValueEditor {
     }
   
     & Button {
-        background: $primary;
-        color: $text;
+        background: transparent;
+        color: $text-primary;
         text-style: none;
         min-width: 0;
         width: auto;
@@ -509,7 +509,7 @@ KeyValueEditor {
         &:hover {
             text-style: b;
             border: none;
-            background: $primary-darken-1;
+            background: transparent;
         }
     }
   }
@@ -731,7 +731,7 @@ Button {
 }
 
 CommandPalette {
-  background: black 33%;
+  background: transparent;
   
   & > Vertical {
     margin-top: 2;

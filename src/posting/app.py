@@ -7,8 +7,10 @@ from typing import Any, Literal, Sequence, cast
 
 import httpx
 from rich.console import RenderableType
+from rich.terminal_theme import TerminalTheme
 from rich.text import Text
 from textual.content import Content
+from textual.filter import ANSIToTruecolor
 
 from posting.importing.curl import CurlImport
 from textual import messages, on, log, work
@@ -1275,6 +1277,13 @@ class Posting(App[None], inherit_bindings=False):
 
         super().__init__()
 
+        # Posting paints every background with the terminal's default colour
+        # (ansi_default). Textual's ANSI-to-truecolor filter would convert
+        # those cells into opaque RGB approximations, so keep it disabled.
+        for line_filter in self._filters:
+            if isinstance(line_filter, ANSIToTruecolor):
+                line_filter.enabled = False
+
         # The animation is set AFTER the app is initialized intentionally,
         # as it needs to override the default approach taken by Textual in
         # App.__init__().
@@ -1284,6 +1293,17 @@ class Posting(App[None], inherit_bindings=False):
         self.set_reactive(Posting.spacing, settings.spacing)
         """The initial spacing of the app is taken from settings, but is a reactive
         which can be toggled via the command palette."""
+
+    def _refresh_truecolor_filter(self, theme: TerminalTheme) -> None:
+        # Textual re-enables the truecolor filter whenever the theme changes
+        # (it is only disabled for the built-in "textual-ansi" theme).
+        # Posting relies on ansi_default backgrounds reaching the terminal
+        # untouched, so the filter is kept permanently disabled.
+        filters = self._filters
+        for index, line_filter in enumerate(filters):
+            if isinstance(line_filter, ANSIToTruecolor):
+                filters[index] = ANSIToTruecolor(theme, enabled=False)
+                return
 
     def on_ready(self) -> None:
         import time
